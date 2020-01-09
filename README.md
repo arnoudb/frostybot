@@ -168,7 +168,7 @@ To get a list of supported symbols for an exchange, use the following command (n
 
     ./frostybot deribittest:markets
 
-* Once all your accounts are configured, ensure that the db/, cache/ and log/ directories are writable by the account that you use you run your web server (for example, www-data on Ubuntu). If for some reason you cannot make those directories writable, you can change the location of the directories in the cfg/cfg.config.php file. If you do change those settings, remember to relocate the directories to the new location. 
+* Once all your accounts are configured, ensure that the db/, cache/ and log/ directories are writable by the account that you use you run your web server (for example, www-data on Ubuntu). If for some reason you cannot make those directories writable, you can change the location of the directories in the cfg/cfg.config.php file. If you do change those settings, remember to relocate the directories to the new location. Check out the [FrostyBot Install Guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md) for more information on how to do this correctly.
 * Run some FrostyBot CLI commands to check if you have done the configuration correctly and to ensure that you are able to reach the exchange (Some CLI commands examples are listed further below).
 * Check that your bot is accessible over the public internet by browsing to it's address. You should see a message similar to the following:
 
