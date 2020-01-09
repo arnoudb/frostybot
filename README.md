@@ -35,7 +35,7 @@ We will add more exchanges based on user demand. Keeping the code cross-compatib
 This bot is speficially designed to execute orders based on webhook alerts received from Tradingview. If you have used Autoview in the past you will understand the concept of converting Tradingview strategies and scripts into executable orders on your exchange. However, unlike Autoview, Frostybot makes use of an external web server (VPS, AWS etc), so does not require your PC to be powered on or your browser to be open for it to work. 
 
 ## Requirements
-If order to use Frostybot, you will need the following:
+In order to use Frostybot, you will need the following:
 * A Linux server which is publicly accessible over the Internet (either by public IP address, DDNS or DNAT). You must be able to access the web server publicly for Frostybot to work. We recommend using the free Ubuntu server available on [Amazon Lightsail](https://lightsail.aws.amazon.com). They also offer a free public IP address. There is also [a handy guide here](https://www.airix.net/en/projects/the-virtual-private-server-in-the-cloud) which will show you how to set up your Lightsail VPS and all the prerequisite software.
 * Apache2/Nginx (whichever you prefer). We highly recommend that you secure it with HTTPS (using [LetsEncrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04) or something similar). It's free, so there's really no excuse for having an insecure web server.
 * PHP 7.2 or higher. You will need the following PHP modules installed (php-curl, php-mbstring, php-json, php-sqlite3, php-cli), and you will need to ensure that PHP is configured on your web server.
