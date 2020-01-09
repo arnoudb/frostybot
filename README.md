@@ -158,9 +158,9 @@ Example account settings in the cfg/cfg.config.php file:
 
 Using the config above, if you wanted to make a long order on your Bitmex main account, the command syntax would be: 
     
-    bitmexmain:long size=5000 price=8000 symbol=BTC/USD
-    ftxsub:short size=5000 price=8000 symbol=BTCUSD   (This example uses a symbol mapping in the config file to convert BTCUSD to BTC-PERP)
-    deribittest:position (This example uses the "default" symbol mapping in the config file which is mapped to BTC-PERPETUAL)    
+    bitmexmain:long size=5000 price=8000 symbol=BTC/USD  (This example provides the symbol in the command)
+    ftxsub:short size=5000 price=8000 symbol=BTCUSD      (This example uses a symbol mapping in the config file to convert BTCUSD to BTC-PERP)
+    deribittest:short size=5000 price=8000               (This example uses the "default" symbol mapping in the config file which is mapped to BTC-PERPETUAL)    
     
 *Note:* The order size is always in USD, and the symbol is required for most exchange-specific commands (unless a default symbol mapping has been provided in the config file, in which case that default symbol will be used if no symbol is provided in the command).
 
