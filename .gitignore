@@ -1,0 +1,5 @@
+db/*
+cache/*
+log/*
+cfg/*
+frostybot-dev.code-workspace
