@@ -45,7 +45,7 @@ We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **n
 
 ## Installation
 
-Check out our installation and configuration guide at [FrostyBot Install Guide](https://github.com/CryptoMF/frostybot-dev/blob/master/INSTALLATION.md).
+Check out our installation and configuration guide at [FrostyBot Install Guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md).
 
 ## Upgrading from a Previous Version of Frostybot
 Version 0.9 has been completely redeveloped from the ground up. The command syntax is different and there is no way to import your old configuration into the new version. We recommend that you install this new version from scratch and remove any prior versions of Frostybot that you have installed.
@@ -54,10 +54,10 @@ Version 0.9 has been completely redeveloped from the ground up. The command synt
 
 The current version of FrostyBot is 0.9. This version constitutes a massive overhaul of the entire codebase and is basically a redevelopment from scratch, with loads of new features and capabilities.
 
-A big shoutout to everybody who has contributed and collaborated on this project. The changelog is available at [FrostyBot Changelog](https://github.com/CryptoMF/frostybot-dev/blob/master/CHANGELOG.md).
+A big shoutout to everybody who has contributed and collaborated on this project. The changelog is available at [FrostyBot Changelog](https://github.com/CryptoMF/frostybot/blob/master/CHANGELOG.md).
 
 ## Usage
-Its recommended to use sub-accounts to limit risk. First follow the instructions in the [Install Guide](https://github.com/CryptoMF/frostybot-dev/blob/master/INSTALLATION.md). Then configure your Tradingview alerts to call the webhook using the appropriate commands:
+Its recommended to use sub-accounts to limit risk. First follow the instructions in the [Install Guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md). Then configure your Tradingview alerts to call the webhook using the appropriate commands:
 
 * Add your Exchange API account information to the cfg/cfg.config.php file. You can have multiple configurations in the file, even for the same exchange (for mainnet/testnet configs), as long as they have distinct account stubs in the accounts array. Use the example layout below to see how to do it.
 
