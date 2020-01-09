@@ -156,7 +156,7 @@ Example account settings in the cfg/cfg.config.php file:
     ];
 ```
 
-Using the config above, if you wanted to make a long order on your Bitmex main account, the command syntax would be: 
+Using the config above, some example command syntax would be as follows: 
     
     bitmexmain:long size=5000 price=8000 symbol=BTC/USD  (This example provides the symbol in the command)
     ftxsub:short size=5000 price=8000 symbol=BTCUSD      (This example uses a symbol mapping in the config file to convert BTCUSD to BTC-PERP)
