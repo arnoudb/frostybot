@@ -159,8 +159,10 @@ Example account settings in the cfg/cfg.config.php file:
 Using the config above, if you wanted to make a long order on your Bitmex main account, the command syntax would be: 
     
     bitmexmain:long size=5000 price=8000 symbol=BTC/USD
+    ftxsub:short size=5000 price=8000 symbol=BTCUSD   (This example uses a symbol mapping in the config file to convert BTCUSD to BTC-PERP)
+    deribittest:position (This example uses the "default" symbol mapping in the config file which is mapped to BTC-PERPETUAL)    
     
-*Note:* The order size is always in USD, and the symbol is required for most exchange-specific commands, such as placing orders. Unlike previous versions of Frostybot, there is no longer an option to specify a default market symbol in the config. You must provide it in the command. Using the market symbol in the command ensures that you to pay closer attention to what your commands are doing, instead of relying on defaults which could change without warning in future versions. 
+*Note:* The order size is always in USD, and the symbol is required for most exchange-specific commands (unless a default symbol mapping has been provided in the config file, in which case that default symbol will be used if no symbol is provided in the command).
 
 To get a list of supported symbols for an exchange, use the following command (notice the "deribittest" part of the command, and how it relates to the account settings in cfg/cfg.config.php as shown in the example above):
 
