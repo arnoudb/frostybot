@@ -1,4 +1,5 @@
 db/*
 log/*
 cfg/*
+cache/*
 frostybot-dev.code-workspace
