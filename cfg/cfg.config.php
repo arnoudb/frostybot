@@ -33,7 +33,7 @@
                 'BTCUSD'    =>  'BTC-PERP',             // Map BTCUSD to BTC-PERP on the exchange
                 'ETHUSD'    =>  'ETH-PERP',             // Map ETHUSD to ETH-PERP on the exchange
             ],
-         ,
+         ],
         'ftxsub' =>  [                                  // This is the account stub, which is used in <stub>:<command>, for example ftxsub:POSITIONS
             'description'   => 'FTX Sub Account',       // This is a general description of the account, for your own information
             'exchange'      => 'ftx',                   // The exchange that this account is on (ftx/deribit/bitmex)
@@ -49,7 +49,7 @@
                 'BTCUSD'    =>  'BTC-PERP',             // Map BTCUSD to BTC-PERP on the exchange
                 'ETHUSD'    =>  'ETH-PERP',             // Map ETHUSD to ETH-PERP on the exchange
             ],
-         ,
+        ],
         'deribitmain' =>  [                             // This is the account stub, which is used in <stub>:<command>, for example deribitmain:POSITIONS
             'description'   => 'Deribit Main Account',  // This is a general description of the account, for your own information
             'exchange'      => 'deribit',               // The exchange that this account is on (ftx/deribit/bitmex)
