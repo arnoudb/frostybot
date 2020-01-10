@@ -57,7 +57,7 @@ The install script will try to automatically detect if you are running Apache or
   
   Replace \[user account\] with the user account that your web server runs as, so that it will be able to read the Frostybot files. The install script will automatically set the appropriate filesystem permissions.
 
-  If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing a manual installation using the procedures below.
+  If the installation is successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install fails, try performing a manual installation using the procedures below.
 
 ### Manual Installation
 
