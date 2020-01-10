@@ -28,7 +28,9 @@ We have a handy install script to automatically detect if you have the git or un
 
 * Download and run the install script
 
-      wget -4 https://tinyurl.com/frostybot-installer -O install.sh && chmod 777 install.sh && ./install.sh
+      sudo wget -4 https://tinyurl.com/frostybot-installer -O install.sh
+      sudo chmod 777 install.sh
+      ./install.sh
       
 * Proceed to post-installation configuration
 
