@@ -23,7 +23,7 @@ Dedicated to @christiaan's mom, not only is she hot, but she's a classy lady too
 Use this bot at your own risk. The authors accept no responsibility for losses incurred through using this software. This is a 0.x release which means it's beta software. So it may and probably will have some bugs. We strongly advise you to use a sub-account with a limited balance, or a testnet account to ensure that the bot is profitable before going live with any strategy. While we have gone to great lengths to test the software, if you do find any bugs, please report them to us and we will sort them out, but if you lose your account, that's on you.
             
 ## Supported Exchanges
-Currently Bitmex, Deribit and FTX exchanges are supported for perpetual and futures markets. For a list of markets supported on your exchange, use the <exchange>:markets command. The bot has been extensively tested on these markets, but should work on orders as well:
+Currently Bitmex, Deribit and FTX exchanges are supported for perpetual and futures markets. For a list of markets supported on your exchange, use the <exchange>:markets command. The bot has been extensively tested on these markets, but should work on others as well:
  
 * **Bitmex:**  BTC/USD and ETH/USD
 * **Deribit:** BTC-PERPETUAL and ETH-PERPETUAL
