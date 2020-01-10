@@ -22,7 +22,7 @@ If order to use Frostybot, you will need the following:
 
 **Quick Automatic Install Script**
 
-*NOTE:* This script will install and configure Apache, PHP, git, nano, wget and Frostybot on a clean Ubuntu or CentOS system. If you already have a web server installed, then the script will only install Frostybot and set the optimal filesystem permissions.
+*NOTE:* This script will install and configure Apache, PHP, git, nano, wget and Frostybot on a clean Ubuntu or CentOS system. It will also install and configure firewalld, and allow SSH, HTTP and HTTPS by default. If you already have a web server installed, then the script will only install Frostybot and set the optimal filesystem permissions.
 
 * Download the install script and make it executable:
 
