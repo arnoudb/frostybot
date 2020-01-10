@@ -132,7 +132,7 @@ maximum position size (which we wanted).</li>
 <li>exchange output normalizers are now extended classes and produce predefined objects (lib.classes.php) in a consistent way across all supported exchanges (lib.normalizer.*.php). </li>
 <li>a lot of work done to ensure that all exchanges support the same commands in excactly the same way</li>
 <li>wrote emulation code to generate "ohlcv" data for Deribit, since the exchange lacks ohlcv support</li>
-<li>added unit test capabilties to provide accelerated testing during development (lib.test.php)</li>
+<li>added unit test capabilties to provide accelerated testing during development (lib.unittests.php)</li>
 </ul></td>
   </tr>
 </table>
