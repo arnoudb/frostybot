@@ -25,6 +25,8 @@ We have a handy install script to automatically detect if you have the git or un
       wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
       chmod 700 /tmp/install.sh
       /tmp/install.sh /var/www/html
+ 
+ *NOTE:* Do not add /frostybot to the web server root path, it will be automatically created
       
 * Proceed to post-installation configuration
 
