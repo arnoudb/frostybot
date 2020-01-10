@@ -39,7 +39,9 @@ We have a handy install script to automatically detect if you have the git or un
 
       /tmp/install.sh
       
-   If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing an advanced automatic installation or a manual installation using the procedures below.     
+  *NOTE:* The script may ask you for the sudo password, simply enter it when prompted.
+  
+   If the installation is successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install fails, try performing an advanced automatic installation or a manual installation using the procedures below.     
 
 **Advanced Automatic Install Options**
 
