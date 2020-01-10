@@ -11,7 +11,6 @@
                 ]; 
         private $exchange;
         private $params;
-        private $strategy;
 
         // Construct backend CCXT exchange object, and instanciate the appropriate output normalizer if it exists
         public function __construct($exchange, $options) {
@@ -360,22 +359,6 @@
             } else {
                 logger::error("You do not currently have a position on ".$symbol);
             }
-        }
-
-        // Backtest strategy on exchange
-        public function backtest($params) {
-            $strategy = $params['strategy'];
-            $class = 'strategy_'.$strategy;
-            $this->strategy = new $class();
-            return $this->strategy->backtest($params);
-        }
-
-        // Autotest strategy on exchange using predefined sets of settings to see which is best
-        public function autotest($params) {
-            $strategy = $params['strategy'];
-            $class = 'strategy_'.$strategy;
-            $this->strategy = new $class();
-            return $this->strategy->autotest($params);
         }
 
         // Settings Getter (did not use __get because I want more control over what can be get)
