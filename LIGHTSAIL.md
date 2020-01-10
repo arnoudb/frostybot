@@ -64,7 +64,7 @@ This document is a quick and dirty walkthrough to show you how to set up a Amazo
       
   ![Lightsail11](https://i.imgur.com/yAL5Rkj.png)      
   
-* Frostybot is now installed and accessible via http://\<yourstaticip\>/frostybot (replace \<yourstaticip\> with the static IP address that you created earlier. If you rety to browse to the address, you should see output similar to the following:
+* Frostybot is now installed and accessible via http://\<yourstaticip\>/frostybot (replace \<yourstaticip\> with the static IP address that you created earlier. In this example's case the URL is http://18.185.145.110/frostybot/. If you try to browse to the address, you should see output similar to the following:
   
   ![Lightsail12](https://i.imgur.com/yplGT2H.png)        
   
