@@ -16,9 +16,25 @@ We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **n
 
 *Note:* This procedure assumes you are using Ubuntu Linux. If you are using a different distribution, the commands may differ.
 
-You have a choice of two simple ways to download FrostyBot. You can either use git or you can download and unzip the zip file. Both procedures are provided.
+You have a choice of two simple ways to download FrostyBot. You can either use git or you can download and unzip the zip file. Both procedures are provided. We also have an installation script that will detect if you have git or unzip installed and use the available command to automatically install Frostybot.
 
-### Install Using Git
+### Automatic Install Using Install Script
+
+* Change to web servers root directory (/var/www/html on Ubuntu). Replace /var/www/html with your web servers root directory if it's different:
+
+      cd /var/www/html
+      
+  *NOTE:* Do not create the frostybot subdirectory, it will be automtically created by the install script
+
+* Download and run the install script
+
+      wget -4 https://tinyurl.com/frostybot-installer -O install.sh && chmod 777 install.sh && ./install.sh
+
+### Manual Installation
+
+If for some reason the install script does not work for you, you can instead manually install Frostybot using Git or Unzip. Both procedures are provided below:
+
+**Manual Install Using Git**
 
 * Firstly, ensure that you have the git program installed
 
@@ -40,7 +56,7 @@ You have a choice of two simple ways to download FrostyBot. You can either use g
 
       sudo mv frostybot /var/www/html/
 
-### Install Using Zip File
+**Manual Install Using Zip File**
 
 If you would prefer not to use git, you can also manually download and unzip the package as shown below:
 
@@ -68,7 +84,7 @@ If you would prefer not to use git, you can also manually download and unzip the
 
       sudo mv frostybot-master /var/www/html/frostybot
 
-### Post-Install Configuration
+**Manually Set File and Folder Permissions (not required if you installed using the install script)**
 
 * Next we need to configure directory ownership and permissions. Run the following commands (replace /var/www/html with your web root directory if it is different):
 
@@ -82,6 +98,8 @@ If you would prefer not to use git, you can also manually download and unzip the
       sudo chmod -R +X frostybot
       
       This should provide access to both your account and the web server.
+
+## Post-Installation Configuration
       
 * At this stage you should already be able to access the bot by browsing to http://yourdomain.com/frostybot/  - You should receive a response similar to this:
     
