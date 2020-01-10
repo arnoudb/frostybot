@@ -34,7 +34,10 @@ If order to use Frostybot, you will need the following:
       /tmp/install.sh
       
   *NOTE:* The script may ask you for the sudo password, simply enter it when prompted.
-  
+
+The output of the commands above should look similar to this:
+  ![screenshot0](https://i.imgur.com/rSFgb7F.png "Screenshot")
+
    If the installation is successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install fails, try performing an advanced automatic installation or a manual installation using the procedures below.     
 
 **Advanced Automatic Install Options**
