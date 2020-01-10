@@ -96,9 +96,9 @@ If you would prefer not to use git, you can also manually download and unzip the
 
  * What this response tells us is that the bot is responding as expected over http. At this point in time you can install an SSL certificate or configure a custom domain for your bot if you like. The actual procedures for doing this are not in this guide, but there are plenty tutorials available on the internet [like this one](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04) to help you complete these tasks.
  
- * Next, you need to configure your exchange API keys on FrostyBot. Edit the bot configuration file using the following command:
+ * Next, you need to configure your exchange API keys on FrostyBot. Edit the bot configuration file using the following command (replace /var/www/html with your web root directory if it is different):
  
-       sudo nano /var/ww/html/frostybot/cfg/cfg.config.php
+       sudo nano /var/www/html/frostybot/cfg/cfg.config.php
        
  * Once the editor is open, scroll down until you find the accounts section and modify it with your API keys as necessary. Here is a sample with all three supported exchanges configured with both mainnet and testnet configs (the apiKeys and secrets are for illustration purposes only, please replace them with your own):
  
