@@ -46,7 +46,7 @@ In order to use Frostybot, you will need the following:
 ## Installation
 
 * We have a quick and dirty walkthrough on how to [setup Frostybot on Amazon Lightsail](https://github.com/CryptoMF/frostybot/blob/master/LIGHTSAIL.md)
-* If you don't want to use Amazon Lightsail, check out our installation and configuration guide at [FrostyBot Install Guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md).
+* If you don't want to use Amazon Lightsail, check out our [installation and configuration guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md).
 
 ## Upgrading from a Previous Version of Frostybot
 Version 0.9 has been completely redeveloped from the ground up. The command syntax is different and there is no way to import your old configuration into the new version. We recommend that you install this new version from scratch and remove any prior versions of Frostybot that you have installed.
