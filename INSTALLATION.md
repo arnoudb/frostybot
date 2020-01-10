@@ -38,6 +38,8 @@ We have a handy install script to automatically detect if you have the git or un
 * Now run the install script.
 
       /tmp/install.sh
+      
+   If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing an advanced automatic installation or a manual installation using the procedures below.     
 
 **Advanced Automatic Install Options**
 
@@ -52,10 +54,6 @@ We have a handy install script to automatically detect if you have the git or un
       /tmp/install.sh [install path] [user account]
   
   Replace \[user account\] with the user account that your web server runs as, so that it will be able to read the Frostybot files. The install script will automatically set the appropriate filesystem permissions.
-
-**After Installation**
-
-* Proceed to post-installation configuration
 
   If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing a manual installation using the procedures below.
 
