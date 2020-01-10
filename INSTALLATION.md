@@ -22,7 +22,7 @@ We have a handy install script to automatically detect if you have the git or un
 
 * The automatic install script has been tested on Ubuntu and CentOS operating systems, as well as Apache and Nginx web servers. If your configuration differs to this, the install script may not run as expected.
 
-* Please ensure that either Apache or Nginx is installed and running.
+* Please ensure that either Apache or Nginx is installed and running, and that PHP is install with all the required modules as per the prerequisites. The install script will not do this for you (yet).
 
 * Also ensure that you have either git or unzip installed. If these packages are not installed, the install script will attempt to automatically install git using yum or apt (depending on your distro).
 
