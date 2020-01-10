@@ -211,10 +211,6 @@
                                                 break;
                         case 'CLOSE'        :   $result = $this->exchange->close(requiredParams($this->params,['symbol']));
                                                 break;
-                        case 'BACKTEST'     :   $result = $this->exchange->backtest(requiredParams($this->params,['strategy','pair','timeframe']));
-                                                break;
-                        case 'AUTOTEST'     :   $result = $this->exchange->autotest(requiredParams($this->params,['strategy','pair']));
-                                                break;
                         default             :   logger::error('Unknown command: '.$command);
                                                 $result = false;
                                                 break;
