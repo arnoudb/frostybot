@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Usage: ./install-git.sh <web root path> [web server account]
+# Usage: ./install-git.sh [web root path] [web server account]
 
-WEBROOT="$1"
-FROSTYPATH="$WEBROOT/frostybot"
+SCRIPTPATH=`dirname "$(readlink -f "$0")"`
 USER=`whoami`
 WSDEFACC="www-data"
 
-if [ -z "$WEBROOT" ]; then
-  echo "Usage: ./install-git.sh <web root path> [web server account]"
-  exit 1
+if [ -z "$1" ]; then
+  WEBROOT="$SCRIPTPATH"
+else
+  WEBROOT="$1"
 fi
+
+FROSTYPATH="$WEBROOT/frostybot"
 
 if [ -z "$2" ]; then
   WEBSERVERACCOUNT="$WSDEFACC"
