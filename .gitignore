@@ -3,3 +3,4 @@ log/*
 cfg/*
 cache/*.json
 frostybot-dev.code-workspace
+install.sh
