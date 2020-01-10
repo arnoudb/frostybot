@@ -15,10 +15,6 @@
         include($normalizer);               
     }
     include('lib/lib.exchange.php');        // Main exchange wrapper
-    include('lib/lib.strategy.php');          // Strategy engine
-    foreach(glob('lib/lib.strategy.*.php') as $strategy) {          // Strategies
-        include($strategy);               
-    }
     include('lib/lib.unittests.php');       // Development test units
     include('lib/lib.command.php');         // Command interpreter
 
