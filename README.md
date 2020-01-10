@@ -41,7 +41,7 @@ In order to use Frostybot, you will need the following:
 * PHP 7.2 or higher. You will need the following PHP modules installed (php-curl, php-mbstring, php-json, php-sqlite3, php-cli), and you will need to ensure that PHP is configured on your web server.
 * If you want to clone Frostybot from Github, you will need to have git installed.
 
-We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **not** within the scope of this guide. If you need help configuring those things, there is a vast knowlegebase of information and guides available on the Internet.
+*Note:* We have a [handy install script](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#automatic-installation-using-install-script) to automatically install and configure Apache, PHP and Frostybot. Apache and PHP will only be installed if no web server is detected. It will also install git, nano and wget if they are not already installed.
 
 ## Installation
 
