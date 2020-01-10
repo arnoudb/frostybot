@@ -16,17 +16,17 @@ We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **n
 
 *Note:* This procedure assumes you are using Ubuntu Linux. If you are using a different distribution, the commands may differ.
 
-We have a handy install script to automatically detect if you have the git or unzip packages installed and to use the relevant package to automatically install Frostybot. Should you rather wish to perform the installation manually, you can either use git or you can download and unzip the zip file. Both procedures are provided [here](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#manual-installation). The choice is yours!
+We have a handy install script to automatically detect if you have the git or unzip packages installed and to use the relevant package to automatically install Frostybot. If you'd rather perform the installation manually, you can either use git or you can download and unzip the zip file. Both procedures are provided [here](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#manual-installation). The choice is yours!
 
 ### Automatic Installation Using Install Script
 
-* Download and run the install script (replace /var/www/html with your web server root directory if it is different):
+* Download and run the install script (replace /var/www/html/ with your web server root directory if it is different):
 
       wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
       chmod 700 /tmp/install.sh
-      /tmp/install.sh /var/www/html
+      /tmp/install.sh /var/www/html/frostybot
  
- *NOTE:* Do not add /frostybot to the web server root path, it will be automatically created
+  *NOTE:* Do not create the install path, it will be automatically created if it does not already exist.
       
 * Proceed to post-installation configuration
 
