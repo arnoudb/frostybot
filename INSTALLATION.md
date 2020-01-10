@@ -57,9 +57,13 @@ If for some reason the install script does not work for you, you can instead man
 
 **Manually Install Using Git**
 
-* Firstly, ensure that you have the git program installed
+* Firstly, ensure that you have the git program installed. Here is the command to install it on Ubuntu
 
       sudo apt install -y git
+      
+  If you are using Redhat/CentOS/Fedora, use this command to install git:
+
+      sudo yum install -y git
 
 * Next, change to your home directory. This will ensure that you have write permission to download the source
 
@@ -81,9 +85,13 @@ If for some reason the install script does not work for you, you can instead man
 
 If you would prefer not to use git, you can also manually download and unzip the package as shown below:
 
-* Firstly, ensure that you have the unzip package installed
+* Firstly, ensure that you have the unzip package installed. Here is the command to install it on Ubuntu
 
       sudo apt install -y unzip
+      
+  If you are using Redhat/CentOS/Fedora, use this command to install unzip:
+
+      sudo yum install -y unzip
        
 * Next, change to your home directory. This will ensure that you have write permission to download the source
 
