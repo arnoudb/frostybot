@@ -16,7 +16,7 @@ We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **n
 
 *Note:* This procedure assumes you are using Ubuntu Linux. If you are using a different distribution, the commands may differ.
 
-You have a choice of two simple ways to download FrostyBot. You can eithe ruse git or you can download and unzip the zip file. Both procedures are provided.
+You have a choice of two simple ways to download FrostyBot. You can either use git or you can download and unzip the zip file. Both procedures are provided.
 
 ### Install Using Git
 
