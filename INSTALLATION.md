@@ -20,6 +20,19 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
+* Please ensure that either Apache or Nginx is installed and running and that PHP is configured correctly.
+
+* Also ensure that you have wget installed, along with either git or unzip:
+
+  To do this on Ubuntu, type:
+  
+      sudo apt update -y
+      sudo apt install -y wget git unzip
+      
+  To do this on CentOS, type:
+  
+      sudo yum install -y wget git unzip
+
 * Download the install script and make it executable:
 
       wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
@@ -27,17 +40,19 @@ We have a handy install script to automatically detect if you have the git or un
       
 * Now run the install script.
 
-      /tmp/install.sh <install directory> <www user account>
+      /tmp/install.sh
       
-  *Note:* You need to replace "install directory" with the path you would like to install Frostybot to. Do not create this path, it will be automatically created by the install script. Likewise, replace "www user account" with the user account your web server uses. Here are examples for some default OS/Web server combinations:
-      
-  | Operating System | Web Server | Install Command  |
-  | ----------------|-------------| ---------------------------------------------|
-  | Ubuntu/Debian    | Apache | /tmp/install.sh /var/www/html/frostybot www-data |
-  | Ubuntu/Debian    | Nginx | /tmp/install.sh /usr/local/nginx/html/frostybot www-data |
-  | Redhat/CentOS    | Apache | /tmp/install.sh /var/www/html/frostybot nobody |
-  | Redhat/CentOS    | Nginx | /tmp/install.sh /usr/local/nginx/html/frostybot nobody |
+  *Note:* The web server will automaticallt detect if you are running Apache or Nginx. If you would prefer to specify the install path, you can do so using the commandline like this:
   
+      /tmp/install.sh [install path]
+  
+  You need to replace "install path" with the path you would like to install Frostybot to. Do not create this path, it will be automatically created by the install script. 
+  
+  The script will also try to automatically determine your web server's user account (like www-data/nobody/nginx etc). If the server is unable to determine the account automatically, or if you would like to override this, you can specify the account on the commandline like this:
+  
+      /tmp/install.sh [install path] [user account]
+  
+  Replace "user account" with the user account that your web server runs as, so that it will be able to read the Frostybot files. The install script will automatically set the appropriate filesystem permissions.
       
 * Proceed to post-installation configuration
 
