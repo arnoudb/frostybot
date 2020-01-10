@@ -36,7 +36,7 @@ You have a choice of two simple ways to download FrostyBot. You can either use g
   
   ![screenshot1](https://i.imgur.com/5rm1bMX.png "Screenshot")
  
-* Next, move the frostybot directory to your /var/www/html/ directory using the following command. You will need sudo privileges to complete this step.
+* Next, move the frostybot directory to your web root directory (/var/www/html/ on Ubuntu using Apache) using the following command. You will need sudo privileges to complete this step. If your web root is different to /var/www/html then replace it with the relevant directory.
 
       sudo mv frostybot /var/www/html/
 
@@ -64,13 +64,13 @@ If you would prefer not to use git, you can also manually download and unzip the
   
   ![screenshot2](https://i.imgur.com/ViAiBWY.png "Screenshot")
  
-* Next, move the frostybot directory to your /var/www/html/ directory using the following command. You will need sudo privileges to complete this step.
+* Next, move the frostybot directory to your web root directory (/var/www/html/ on Ubuntu using Apache) using the following command. You will need sudo privileges to complete this step. If your web root is different to /var/www/html then replace it with the relevant directory.
 
       sudo mv frostybot-master /var/www/html/frostybot
 
 ### Post-Install Configuration
 
-* Next we need to configure directory ownership and permissions. Run the following commands:
+* Next we need to configure directory ownership and permissions. Run the following commands (replace /var/www/html with your web root directory if it is different):
 
       cd /var/www/html
       sudo chgrp -R www-data frostybot
