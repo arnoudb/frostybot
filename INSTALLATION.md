@@ -18,7 +18,7 @@ We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **n
 
 You have a choice of two simple ways to download FrostyBot. You can either use git or you can download and unzip the zip file. Both procedures are provided. We also have an installation script that will detect if you have git or unzip installed and use the available command to automatically install Frostybot.
 
-### Automatic Install Using Install Script
+### Automatic Installation Using Install Script
 
 * Change to web servers root directory (/var/www/html on Ubuntu). Replace /var/www/html with your web servers root directory if it's different:
 
@@ -29,12 +29,16 @@ You have a choice of two simple ways to download FrostyBot. You can either use g
 * Download and run the install script
 
       wget -4 https://tinyurl.com/frostybot-installer -O install.sh && chmod 777 install.sh && ./install.sh
+      
+* Proceed to post-installation configuration
+
+  If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing a manual installation using the procedures below.
 
 ### Manual Installation
 
 If for some reason the install script does not work for you, you can instead manually install Frostybot using Git or Unzip. Both procedures are provided below:
 
-**Manual Install Using Git**
+**Manually Install Using Git**
 
 * Firstly, ensure that you have the git program installed
 
@@ -56,7 +60,7 @@ If for some reason the install script does not work for you, you can instead man
 
       sudo mv frostybot /var/www/html/
 
-**Manual Install Using Zip File**
+**Manually Install Using Zip File**
 
 If you would prefer not to use git, you can also manually download and unzip the package as shown below:
 
