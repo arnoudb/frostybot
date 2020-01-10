@@ -8,27 +8,23 @@ This document is aimed at being a comprehensive installation guide to get you up
 
 If order to use Frostybot, you will need the following:
 * A Linux server which is publicly accessible over the Internet (either by public IP address, DDNS or DNAT). You must be able to access the web server publicly for Frostybot to work. We recommend using the free Ubuntu server available on [Amazon Lightsail](https://lightsail.aws.amazon.com). They also offer a free public IP address. There is also [a handy guide here](https://www.airix.net/en/projects/the-virtual-private-server-in-the-cloud) which will show you how to set up your Lightsail VPS and all the prerequisite software.
-* Apache2/Nginx (whichever you prefer). We highly recommend that you secure it with HTTPS (using [LetsEncrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04) or something similar). It's free, so there's really no excuse for having an insecure web server.
+* Apache2/Nginx (whichever you prefer). We highly recommend that you secure it with HTTPS (using [LetsEncrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04) or something similar). It's free, so there's really no excuse for having an insecure web server. 
 * PHP 7.2 or higher. You will need the following PHP modules installed (php-curl, php-mbstring, php-json, php-sqlite3, php-cli), and you will need to ensure that PHP is configured on your web server.
 * If you want to clone Frostybot from Github, you will need to have git installed. If you do not want to install git, you'll at least require the wget and unzip packages installed for the alternative install option.
 
-We must stress that the setup and configuration of Linux/Apache/Nginx/PHP is **not** within the scope of this guide. If you need help configuring those things, there is a vast knowlegebase of information and guides available on the Internet.
+*NOTE:* If you use the automatic install script below, Apache, PHP and Git will be automatically installed and configured if there is no web server detected. The script will not configure SSL on your server, you need to do this yourself if you want it.
 
-*Note:* This procedure assumes you are using Ubuntu Linux. If you are using a different distribution, the commands may differ.
-
-We have a handy install script to automatically detect if you have the git or unzip packages installed and to use the relevant package to automatically install Frostybot. If you'd rather perform the installation manually, you can either use git or you can download and unzip the zip file. Both procedures are provided [here](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#manual-installation). The choice is yours!
+We have a handy install script to automatically install and configure Apache and PHP if no web server is detected. It will also install git, nano and wget if they are not already installed. If you'd rather perform the installation manually, you can either use git or you can download and unzip the zip file. Both procedures are provided [here](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#manual-installation). The choice is yours!
 
 ### Automatic Installation Using Install Script
 
 **Prerequisites**
 
-* The automatic install script has been tested on Ubuntu and CentOS operating systems, as well as Apache and Nginx web servers. If your configuration differs to this, the install script may not run as expected.
+* The automatic install script has been tested on Ubuntu and CentOS operating systems, as well as Apache and Nginx web servers. If your configuration differs to this, the install script may not run as expected. If a web service is not detected on your server, the install script will automatically install and configure Apache and PHP. It will also install git, nano and wget if they are not already installed. It will then proceed to install Frostybot and configure the correct filesystem permissions. It will not configure Frostybot, that is up to you to do in the cfg/cfg.config.php file, as explained [later in this document](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration).
 
-* Please ensure that either Apache or Nginx is installed and running, and that PHP is installed with all the required modules as per the prerequisites. The install script will not do this for you (yet).
+**Quick Automatic Install Script**
 
-* Also ensure that you have either git or unzip installed. If these packages are not installed, the install script will attempt to automatically install git using yum or apt (depending on your distro).
-
-**Quick Automatic Install**
+*NOTE:* This script will install and configure Apache, PHP, git, nano, wget and Frostybot on a clean Ubuntu or CentOS system. If you already have a web server installed, then the script will only install Frostybot and set the optimal filesystem permissions.
 
 * Download the install script and make it executable:
 
@@ -61,7 +57,7 @@ The install script will try to automatically detect if you are running Apache or
 
 ### Manual Installation
 
-If for some reason the install script does not work for you, you can instead manually install Frostybot using Git or Unzip. Both procedures are provided below:
+If for some reason the install script does not work for you, you can instead manually install Frostybot using Git or Unzip. Both procedures are provided below (Note that you will need to install and configure your web server and PHP yourself):
 
 **Manually Install Using Git**
 
