@@ -20,17 +20,11 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
-* Change to your web servers root HTML directory (/var/www/html on Ubuntu). Replace /var/www/html with your web servers root HTML directory if it's different:
+* Download and run the install script (replace /var/www/html with your web server root directory if it is different):
 
-      cd /var/www/html
-      
-  *NOTE:* Do not create the frostybot subdirectory, it will be automtically created by the install script
-
-* Download and run the install script
-
-      sudo wget -4 https://tinyurl.com/frostybot-installer -O install.sh
-      sudo chmod 777 install.sh
-      ./install.sh
+      wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
+      chmod 777 /tmp/install.sh
+      /tmp/install.sh /var/www/html
       
 * Proceed to post-installation configuration
 
