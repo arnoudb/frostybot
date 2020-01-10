@@ -155,7 +155,7 @@ If you would prefer not to use git, you can also manually download and unzip the
  
        sudo nano /var/www/html/frostybot/cfg/cfg.config.php
        
- * Once the editor is open, scroll down until you find the accounts section and modify it with your API keys as necessary. Here is a sample with all three supported exchanges configured with both mainnet and testnet configs (the apiKeys and secrets are for illustration purposes only, please replace them with your own):
+ * Once the editor is open, scroll down until you find the accounts section and modify it with your API keys as necessary. Here is a sample with all three supported exchanges configured with both mainnet and testnet configs (the apiKeys and secrets are for illustration purposes only, please replace them with your own). You do not need to configure all of these accounts, only the accounts you need. You can also add more accounts or remove accounts from the array as required, as long as they have unique stubs. Keep an eye on the PHP syntax so you don't break anything. Once you have configured your accounts press CTRL X and then Y to save the file and exit the editor:
  
 ```php
     // Account settings
