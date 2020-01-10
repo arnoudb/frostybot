@@ -22,16 +22,7 @@ We have a handy install script to automatically detect if you have the git or un
 
 * Please ensure that either Apache or Nginx is installed and running and that PHP is configured correctly.
 
-* Also ensure that you have wget installed, along with either git or unzip:
-
-  To do this on Ubuntu, type:
-  
-      sudo apt update -y
-      sudo apt install -y wget git unzip
-      
-  To do this on CentOS, type:
-  
-      sudo yum install -y wget git unzip
+* Also ensure that you have wget installed, along with either git or unzip. If these packages are not installed, the install script will attempt to automatically install them.
 
 * Download the install script and make it executable:
 
