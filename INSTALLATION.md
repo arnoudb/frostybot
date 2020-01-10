@@ -43,7 +43,7 @@ We have a handy install script to automatically detect if you have the git or un
 
 **Advanced Automatic Install Options**
 
-  *Note:* The web server will automatically detect if you are running Apache or Nginx, and will automatically determine the install path as "\<web server root\>/frostybot". If you would prefer to specify the install path, you can do so using the commandline like this:
+The install script will try to automatically detect if you are running Apache or Nginx, and will automatically use the install path "\<web server root\>/frostybot". If you would prefer to specify the install path, you can do so using the script like this:
   
       /tmp/install.sh [install path]
   
