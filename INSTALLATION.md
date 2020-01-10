@@ -20,11 +20,15 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
+**Prerequisites**
+
 * The automatic install script has been tested on Ubuntu and CentOS operating systems, as well as Apache and Nginx web servers. If your configuration differs to this, the install script may not run as expected.
 
 * Please ensure that either Apache or Nginx is installed and running, and that PHP is installed with all the required modules as per the prerequisites. The install script will not do this for you (yet).
 
 * Also ensure that you have either git or unzip installed. If these packages are not installed, the install script will attempt to automatically install git using yum or apt (depending on your distro).
+
+**Quick Automatic Install**
 
 * Download the install script and make it executable:
 
@@ -34,7 +38,9 @@ We have a handy install script to automatically detect if you have the git or un
 * Now run the install script.
 
       /tmp/install.sh
-      
+
+**Advanced Automatic Install Options**
+
   *Note:* The web server will automatically detect if you are running Apache or Nginx, and will automatically determine the install path as "\<web server root\>/frostybot". If you would prefer to specify the install path, you can do so using the commandline like this:
   
       /tmp/install.sh [install path]
@@ -46,7 +52,9 @@ We have a handy install script to automatically detect if you have the git or un
       /tmp/install.sh [install path] [user account]
   
   Replace \[user account\] with the user account that your web server runs as, so that it will be able to read the Frostybot files. The install script will automatically set the appropriate filesystem permissions.
-      
+
+**After Installation**
+
 * Proceed to post-installation configuration
 
   If the installation was successful, you can proceed to [post-installation configuration](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md#post-installation-configuration). If the install was unsuccesful, try performing a manual installation using the procedures below.
