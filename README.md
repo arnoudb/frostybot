@@ -235,3 +235,7 @@ Other than Tradingview firing off webhooks, you can also communicate manually wi
     ./frostybot flushcache                                      (Flush the cache file, for troubleshooting)
 
 *NOTE:* The command syntax for Tradingview is exactly the same as for the CLI (except for the addition of ./frostybot in front of the command on the CLI). Any command that you can run on the CLI you can also run using webhooks. While this may not necessarily be useful for Tradingview, it can come in handy if you want to integrate something else with Frostybot. All Frostybot output is in JSON, which makes external integration, like scripting and charting quite simple.
+
+## Report Bugs
+
+If you find a bug in the software, kindly report it [here](https://github.com/CryptoMF/frostybot/issues/new) so that we can properly track it.
