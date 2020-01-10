@@ -20,7 +20,7 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
-* Change to web servers root directory (/var/www/html on Ubuntu). Replace /var/www/html with your web servers root directory if it's different:
+* Change to your web servers root HTML directory (/var/www/html on Ubuntu). Replace /var/www/html with your web servers root HTML directory if it's different:
 
       cd /var/www/html
       
