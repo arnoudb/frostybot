@@ -20,9 +20,11 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
-* Please ensure that either Apache or Nginx is installed and running and that PHP is configured correctly.
+* The automatic install script has been tested on Ubuntu and CentOS operating systems, as well as Apache and Nginx web servers. If your configuration differs to this, the install script may not run as expected.
 
-* Also ensure that you have wget installed, along with either git or unzip. If these packages are not installed, the install script will attempt to automatically install them.
+* Please ensure that either Apache or Nginx is installed and running.
+
+* Also ensure that you have either git or unzip installed. If these packages are not installed, the install script will attempt to automatically install git using yum or apt (depending on your distro).
 
 * Download the install script and make it executable:
 
@@ -33,7 +35,7 @@ We have a handy install script to automatically detect if you have the git or un
 
       /tmp/install.sh
       
-  *Note:* The web server will automaticallt detect if you are running Apache or Nginx. If you would prefer to specify the install path, you can do so using the commandline like this:
+  *Note:* The web server will automatically detect if you are running Apache or Nginx, and will automatically determine the install path as "<web server toot>/frostybot". If you would prefer to specify the install path, you can do so using the commandline like this:
   
       /tmp/install.sh [install path]
   
