@@ -6,6 +6,11 @@ SCRIPTPATH=`dirname "$(readlink -f "$0")"`
 USER=`whoami`
 WSDEFACC="www-data"
 
+if ! [ -x "$(command -v gitter)" ]; then
+  echo 'ERROR: git is not installed.' >&2
+  exit 1
+fi
+
 if [ -z "$1" ]; then
   WEBROOT="$SCRIPTPATH"
 else
