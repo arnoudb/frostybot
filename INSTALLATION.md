@@ -29,6 +29,10 @@ We have a handy install script to automatically detect if you have the git or un
   *NOTE:* Do not create the install path, it will be automatically created if it does not already exist. The script will also set the correct filesystem permissions for Frostybot. For example, if you're using Redhat/CentOS instead of Ubuntu, then you would set the account to "nobody" instead of "www-data" like this:
   
       /tmp/install.sh /var/www/html/frostybot nobody
+  
+  Likewise, if you are using Nginx instead of Apache on Ubuntu, you can change the install directory like this:
+  
+      /tmp/install.sh /usr/local/nginx/html www-data
       
 * Proceed to post-installation configuration
 
