@@ -20,13 +20,13 @@ We have a handy install script to automatically detect if you have the git or un
 
 ### Automatic Installation Using Install Script
 
-* Download and run the install script (replace /var/www/html/ with your web server root directory if it is different):
+* Download and run the install script. Replace "/var/www/html/" with your web server root directory if it is different and replace "www-data" with your web server user account if it is different:
 
       wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
       chmod 700 /tmp/install.sh
-      /tmp/install.sh /var/www/html/frostybot
+      /tmp/install.sh /var/www/html/frostybot www-data
  
-  *NOTE:* Do not create the install path, it will be automatically created if it does not already exist. The script will also set the correct filesystem permissions for frostybot. If your web server uses an account other than www-data (default on Ubuntu), then simply specify the appropriate account when running the install script. For example, on Redhat/CentOS you would set the account to nobody like this:
+  *NOTE:* Do not create the install path, it will be automatically created if it does not already exist. The script will also set the correct filesystem permissions for frostybot. For example, if you're using Redhat/CentOS instead of Ubuntu, then you would set the account to "nobody" instead of "www-data" like this:
   
       /tmp/install.sh /var/www/html/frostybot nobody
       
