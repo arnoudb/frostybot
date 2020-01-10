@@ -26,7 +26,7 @@ We have a handy install script to automatically detect if you have the git or un
       chmod 700 /tmp/install.sh
       /tmp/install.sh /var/www/html/frostybot www-data
  
-  *NOTE:* Do not create the install path, it will be automatically created if it does not already exist. The script will also set the correct filesystem permissions for frostybot. For example, if you're using Redhat/CentOS instead of Ubuntu, then you would set the account to "nobody" instead of "www-data" like this:
+  *NOTE:* Do not create the install path, it will be automatically created if it does not already exist. The script will also set the correct filesystem permissions for Frostybot. For example, if you're using Redhat/CentOS instead of Ubuntu, then you would set the account to "nobody" instead of "www-data" like this:
   
       /tmp/install.sh /var/www/html/frostybot nobody
       
