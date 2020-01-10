@@ -59,7 +59,7 @@ A big shoutout to everybody who has contributed and collaborated on this project
 ## Usage
 Its recommended to use sub-accounts to limit risk. First follow the instructions in the [Install Guide](https://github.com/CryptoMF/frostybot/blob/master/INSTALLATION.md). Then configure your Tradingview alerts to call the webhook using the appropriate commands:
 
-* Add your Exchange API account information to the cfg/cfg.config.php file. You can have multiple configurations in the file, even for the same exchange (for mainnet/testnet configs), as long as they have distinct account stubs in the accounts array. Use the example layout below to see how to do it.
+* Add your Exchange API account information to the cfg/cfg.config.php file. You can have multiple configurations in the file, even for the same exchange (for mainnet/testnet configs), as long as they have distinct account stubs in the accounts array. Use the example layout below to see how to do it. Typically you would only configure one or two accounts, depending on your needs. You do not have to configure all of these accounts, and you can add or remove accounts from the array as required. Just keep and eye on the PHP syntax so you don't break anything.
 
 Example account settings in the cfg/cfg.config.php file:
 
