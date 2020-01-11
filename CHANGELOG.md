@@ -130,7 +130,7 @@ maximum position size (which we wanted).</li>
 <li>added SQLLite support for ohlcv data and request caching and in preparation for future capabilities (lib.database.php)</li>
 <li>added error and exception handlers to ensure that all messages are captured and outputted to JSON (lib.output.php)</li>
 <li>exchange output normalizers are now extended classes and produce predefined objects (lib.classes.php) in a consistent way across all supported exchanges (lib.normalizer.*.php). </li>
-<li>a lot of work done to ensure that all exchanges support the same commands in excactly the same way</li>
+<li>a lot of work done to ensure that all exchanges support the same commands in exactly the same way with the same output structure.</li>
 <li>wrote emulation code to generate "ohlcv" data for Deribit, since the exchange lacks ohlcv support</li>
 <li>added unit test capabilties to provide accelerated testing during development (lib.unittests.php)</li>
 <li>added install script to aid with download and install of Frostybot (https://tinyurl.com/frostybot-installer)</li>
