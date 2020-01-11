@@ -51,6 +51,8 @@ In order to use Frostybot, you will need the following:
 ## Upgrading from a Previous Version of Frostybot
 Version 0.9 has been completely redeveloped from the ground up. The command syntax is different and there is no way to import your old configuration into the new version. We recommend that you install this new version from scratch and remove any prior versions of Frostybot that you have installed.
 
+We will pay more attention to backwards compatibility once we are out of beta, but until then this is the wild west and changes will happen while we find the best way to get certain things done.
+
 ## Changelog
 
 The current version of FrostyBot is 0.9. This version constitutes a massive overhaul of the entire codebase and is basically a redevelopment from scratch, with loads of new features and capabilities.
