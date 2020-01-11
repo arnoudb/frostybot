@@ -10,14 +10,13 @@
     const debug = false;                    // Enable debugging (true/false)
     const whitelist = [                     // Whitelist IP addresses for URL requests to bot (does not affect CLI requests). Tradingview addresses here by default. DO NOT remove the default addresses.
         //'127.0.0.1',                      // Uncomment this line if you want to use local CURL requests
-        //'<your ip address>',              // Uncomment and replace with your home public IP address to run remove CURL or browser requests. Use https://www.whatismyip.com/ to find your local public IP.
+        //'<your ip address>',              // Uncomment and replace with your home public IP address to run remote CURL or browser requests. Use https://www.whatismyip.com/ to find your local public IP.
         '52.89.214.238',                    // This is a Tradingview webhook server address - DO NOT DELETE 
         '34.212.75.30',                     // This is a Tradingview webhook server address - DO NOT DELETE 
         '54.218.53.128',                    // This is a Tradingview webhook server address - DO NOT DELETE 
         '52.32.178.7',                      // This is a Tradingview webhook server address - DO NOT DELETE 
     ];
-    const cryptodatum_key = 'bb2d5fb0-04c1-11ea-8760-0e5f332f7b42';   // This is for a future capability. It can be ignored for now.
-
+    
     // Account settings
 
     const accounts = [                      
