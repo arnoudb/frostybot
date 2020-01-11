@@ -322,7 +322,8 @@
             }
             if ($contract_size > 0) {
                 $balance = $this->total_balance_usd();
-                logger::info('TRADE:'.($dir == 'buy' ? 'LONG ' : 'SHORT').' | Symbol: '.$symbol.' | Direction: '.$dir.' | Type: '.$type.' | Size: '.($contract_size * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance);
+                $comment = isset($params['comment']) ? $params['comment'] : 'None';
+                logger::info('TRADE:'.($dir == 'buy' ? 'LONG ' : 'SHORT').' | Symbol: '.$symbol.' | Direction: '.$dir.' | Type: '.$type.' | Size: '.($contract_size * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
                 return $this->ccxt->create_order($symbol, $type, $dir, abs($contract_size), $price);
             }
             return false;
@@ -353,7 +354,8 @@
                 $price = null;
                 if ($contract_size > 0) {
                     $balance = $this->total_balance_usd();
-                    logger::info('TRADE:CLOSE | Symbol: '.$symbol.' | Direction: '.$dir.' | Type: '.$type.' | Size: '.($contract_size * $market->contract_size).' | Price: '.(is_null($price) ? 'Market' : $price).' | Balance: '.$balance);
+                    $comment = isset($params['comment']) ? $params['comment'] : 'None';
+                    logger::info('TRADE:CLOSE | Symbol: '.$symbol.' | Direction: '.$dir.' | Type: '.$type.' | Size: '.($contract_size * $market->contract_size).' | Price: '.(is_null($price) ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
                     return $this->ccxt->create_order($symbol, $type, $dir, abs($contract_size), $price);
                 }
             } else {

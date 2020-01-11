@@ -7,6 +7,7 @@
         private $params = [];
         private $exchange;
         private $commandStr;
+        private $type;
 
         // Override constructor (for internal used only)
         public function __construct($commandStr = null) {
@@ -43,21 +44,19 @@
         private function _parseParams() {
             if (!is_null($this->commandStr)) {
                 $this->_parseInternal();
-                logger::debug("Internal command issued: ".str_replace('__frostybot__:','',$this->params['stub'].':'.$this->params['command']));
             } else {
                 $execname = isset($_SERVER['argv'][0]) ? basename($_SERVER['argv'][0]) : '';
                 if ($execname == 'frostybot') {
                     $this->_parseCLI();
-                    logger::debug("CLI command issued: ".str_replace('__frostybot__:','',$this->params['stub'].':'.$this->params['command']));
                 } else {
                     $this->_parseURL();
-                    logger::debug("URL command issued: ".str_replace('__frostybot__:','',$this->params['stub'].':'.$this->params['command']));
                 }
             }
         }
 
         // Parse URL GET/POST paramters (from TradingView)
         private function _parseURL() {
+            $this->type = "URL";
             // Check that request is coming from an authorised Trading View IP
             if (isset($_SERVER['REMOTE_ADDR']) && (!in_array($_SERVER['REMOTE_ADDR'], whitelist))) {
                 logger::error('Request received from invalid address: ' . $_SERVER['REMOTE_ADDR']);
@@ -105,6 +104,7 @@
 
         // Parse CLI parameters
         private function _parseCLI() {
+            $this->type = "CLI";
             $args = $_SERVER['argv'];
             if (isset($args[1])) {
                 $exchangeCommand = $args[1];
@@ -129,6 +129,7 @@
 
         // Parse Internal parameters
         private function _parseInternal() {
+            $this->type = "Internal";
             $args = explode(" ",$this->commandStr);
             if (isset($args[0])) {
                 $exchangeCommand = $args[0];
@@ -153,6 +154,7 @@
         // Execute the command, and ensure that the necessary parameters have been given
         public function execute($output = false) {
             $this->_parseParams();
+            logger::debug($this->type." command issued: ".str_replace('__frostybot__:','',$this->params['stub'].':'.$this->params['command']).(isset($this->params['comment']) ? ' ('.$this->params['comment'].')' : ''));
             if (requiredParams($this->params,['stub','command']) !== false) {
                 $stub = $this->params['stub'];
                 $command = $this->params['command'];
