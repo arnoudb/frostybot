@@ -2,7 +2,7 @@
 
 ## Installation Guide
 
-This document is aimed at being a comprehensive installation guide to get you upand running on FrostyBot.
+This document is aimed at being a comprehensive installation guide to get you up and running on FrostyBot.
 
 ### Prerequisites
 
@@ -72,7 +72,7 @@ If for some reason the install script does not work for you, you can instead man
 
 * Next, change to your home directory. This will ensure that you have write permission to download the source
 
-    cd ~
+      cd ~
 
 * Next, run git clone to download the software
 
@@ -131,7 +131,7 @@ If you would prefer not to use git, you can also manually download and unzip the
       sudo chmod 750 frostybot/frostybot
       sudo chmod -R +X frostybot
       
-      This should provide access to both your account and the web server.
+  This should provide access to both your account and the web server.
 
 ## Post-Installation Configuration
       
