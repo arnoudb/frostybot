@@ -1,6 +1,6 @@
 db/*
-log/*
-cfg/*
+log/frostybot.log
+cfg/cfg.config.php
 cache/*.json
 frostybot-dev.code-workspace
 install.sh
