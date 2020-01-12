@@ -57,8 +57,10 @@
         // Parse URL GET/POST paramters (from TradingView)
         private function _parseURL() {
             $this->type = "URL";
-            // Check that request is coming from an authorised Trading View IP
-            if (isset($_SERVER['REMOTE_ADDR']) && (!in_array($_SERVER['REMOTE_ADDR'], whitelist))) {
+            // Check that request is coming from an authorised Trading View IP or a whitelisted IP
+            $tradingview = ['52.89.214.238','34.212.75.30','54.218.53.128','52.32.178.7'];
+            $whitelist = array_merge($tradingview, whitelist);
+            if (isset($_SERVER['REMOTE_ADDR']) && (!in_array($_SERVER['REMOTE_ADDR'], $whitelist))) {
                 logger::error('Request received from invalid address: ' . $_SERVER['REMOTE_ADDR']);
             }
             $rawPostText = file_get_contents('php://input');

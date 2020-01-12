@@ -8,13 +8,9 @@
     const cachegcage = 5;                   // Delete cache files older than 5 days during garbage collection
     const cachegcpct = 20;                  // Garbage collection probability percentage
     const debug = false;                    // Enable debugging (true/false)
-    const whitelist = [                     // Whitelist IP addresses for URL requests to bot (does not affect CLI requests). Tradingview addresses here by default. DO NOT remove the default addresses.
+    const whitelist = [                     // Whitelist IP addresses for URL requests to bot (does not affect CLI requests). Tradingview addresses are whitelisted by default.
         //'127.0.0.1',                      // Uncomment this line if you want to use local CURL requests
         //'<your ip address>',              // Uncomment and replace with your home public IP address to run remote CURL or browser requests. Use https://www.whatismyip.com/ to find your local public IP.
-        '52.89.214.238',                    // This is a Tradingview webhook server address - DO NOT DELETE 
-        '34.212.75.30',                     // This is a Tradingview webhook server address - DO NOT DELETE 
-        '54.218.53.128',                    // This is a Tradingview webhook server address - DO NOT DELETE 
-        '52.32.178.7',                      // This is a Tradingview webhook server address - DO NOT DELETE 
     ];
     
     // Account settings
