@@ -23,10 +23,44 @@
         // Get supported OHLCV timeframes
         public function fetch_timeframes() {
             return [
+                '15' => '15'   // Currently the FrostyAPI server only keeps 15m OHLCV data
             ];
         }
 
-        // Parse trades
+        // Get OHLCV data from FrostyAPI (The Deribit API does not provide this data)
+        public function fetch_ohlcv($symbol, $timeframe, $count=100) {
+            logger::debug('OHLCV data is not available for Deribit due to API limitations. Fetching OHLCV from FrostyAPI...');
+            $symbolmap = [
+                'BTC-PERPETUAL' =>  'DERIBIT_PERP_BTC_USD',
+                'ETH-PERPETUAL' =>  'DERIBIT_PERP_ETH_USD',
+            ];
+            $frostyapi = new FrostyAPI();
+            $search = [
+                'objectClass'       =>  'OHLCV',
+                'exchange'          =>  'deribit',
+                'symbol'            =>  $symbolmap[strtoupper($symbol)],
+                'timeframe'         =>  $timeframe,
+                'limit'             =>  $count,
+                'sort'              =>  'timestamp_start:desc',
+            ];
+            $ohlcv = [];
+            $result = $frostyapi->data->search($search);
+            if (is_array($result->data)) {
+                foreach ($result->data as $rawEntry) {
+                    $timestamp = $rawEntry->timestamp_end;
+                    $open = $rawEntry->open;
+                    $high = $rawEntry->high;
+                    $low = $rawEntry->low;
+                    $close = $rawEntry->close;
+                    $volume = $rawEntry->volume;
+                    $ohlcv[] = new ohlcvObject($symbol,$timeframe,$timestamp,$open,$high,$low,$close,$volume,$rawEntry);
+                }
+            }
+            return $ohlcv;
+        }
+
+        /*
+        // Parse raw trade data to build OHLCV data, very time consuming so replaced with FrostyAPI
         private function parse_trades($symbol, $timeframe, $trades) {
             $ohlcv = [];
             foreach($trades as $trade) {
@@ -47,7 +81,7 @@
 
         }
 
-        // Get OHLCV data
+        // Get OHLCV data by manually compiling it from trade history (very time consuming)
         public function fetch_ohlcv($symbol, $timeframe, $count=100) {
             logger::debug('OHLCV data is not available for Deribit due to API limitations. Generating OHLCV from trade history...');
             $apiurl = str_replace('https://','',strtolower($this->ccxt->urls['api']));
@@ -97,6 +131,7 @@
             $ohlcv = $this->parse_trades($symbol, $timeframe, $trades);
             return $ohlcv;
         }
+        */
 
         // Get list of markets from exchange
         public function fetch_markets($data) {

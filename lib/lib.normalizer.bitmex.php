@@ -22,15 +22,51 @@
 
         // Get supported OHLCV timeframes
         public function fetch_timeframes() {
-            return [
+            return [                // Use this if using the FrostyAPI for OHLCV data
+                '15'    =>  '15',
+            ];
+            /*return [              // Use this if using the Bitmex API for OHLCV data
                 '1'     => '1m',
                 '5'     => '5m',
                 '60'    => '1h',
                 '1440'  => '1d',
-            ];
+            ];*/
         }
 
-        // Get OHLCV data
+        // Get OHLCV data from FrostyAPI (The Deribit API does not provide this data)
+        public function fetch_ohlcv($symbol, $timeframe, $count=100) {
+            logger::debug('Fetching OHLCV from FrostyAPI...');
+            $symbolmap = [
+                'BTC/USD'  =>  'BITMEX_PERP_BTC_USD',
+                'ETH/USD'  =>  'BITMEX_PERP_ETH_USD',
+            ];
+            $frostyapi = new FrostyAPI();
+            $search = [
+                'objectClass'       =>  'OHLCV',
+                'exchange'          =>  'bitmex',
+                'symbol'            =>  $symbolmap[strtoupper($symbol)],
+                'timeframe'         =>  $timeframe,
+                'limit'             =>  $count,
+                'sort'              =>  'timestamp_start:desc',
+            ];
+            $ohlcv = [];
+            $result = $frostyapi->data->search($search);
+            if (is_array($result->data)) {
+                foreach ($result->data as $rawEntry) {
+                    $timestamp = $rawEntry->timestamp_end;
+                    $open = $rawEntry->open;
+                    $high = $rawEntry->high;
+                    $low = $rawEntry->low;
+                    $close = $rawEntry->close;
+                    $volume = $rawEntry->volume;
+                    $ohlcv[] = new ohlcvObject($symbol,$timeframe,$timestamp,$open,$high,$low,$close,$volume,$rawEntry);
+                }
+            }
+            return $ohlcv;
+        }
+
+        // Get OHLCV data from Bitmex API (replaced by the method above)
+        /*
         public function fetch_ohlcv($symbol, $timeframe, $count=100) {
             $markets = $this->ccxt->fetch_markets();
             foreach($markets as $market) {
@@ -57,6 +93,7 @@
             }
             return $ohlcv;
         }
+        */
 
         // Get list of markets from exchange
         public function fetch_markets($data) {

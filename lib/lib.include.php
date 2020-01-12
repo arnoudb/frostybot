@@ -8,6 +8,7 @@
     include('lib/lib.cache.php');           // Cache handler
     include('lib/lib.classes.php');         // Class definitions
     include('lib/lib.common.php');          // Commonly used function library
+    include('lib/lib.frostyapi.php');       // Communication to Frostybot central API (api.frostytrading.com)
     include('lib/lib.database.php');        // SQLite database backend
     include('ccxt/ccxt.php');               // CCXT wrapper
     include('lib/lib.normalizer.php');      // Normalizer base class
