@@ -49,22 +49,6 @@
         }
     }
 
-
-    // Remove secrets from config output
-    function censorConfig($config) {
-        $output = [];
-        foreach($config as $key => $val) {
-            if (isset($val['parameters']['apiKey'])) {
-                $val['parameters']['apiKey'] = str_repeat("*",10);
-            }
-            if (isset($val['parameters']['secret'])) {
-                $val['parameters']['secret'] = str_repeat("*",10);
-            }
-            $output[$key] = $val;
-        }
-        return $output;
-    }
-
     // Round all the elements of an array
 
     function roundall($arr, $precision = 5) {

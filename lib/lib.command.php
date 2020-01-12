@@ -58,11 +58,14 @@
         private function _parseURL() {
             $this->type = "URL";
             // Check that request is coming from an authorised Trading View IP or a whitelisted IP
-            $tradingview = ['52.89.214.238','34.212.75.30','54.218.53.128','52.32.178.7'];
-            $whitelist = array_merge($tradingview, whitelist);
-            if (isset($_SERVER['REMOTE_ADDR']) && (!in_array($_SERVER['REMOTE_ADDR'], $whitelist))) {
-                logger::error('Request received from invalid address: ' . $_SERVER['REMOTE_ADDR']);
-            }
+            
+            whitelist::validate($_SERVER['REMOTE_ADDR']);
+            //$tradingview = ['52.89.214.238','34.212.75.30','54.218.53.128','52.32.178.7'];
+            //$whitelist = array_merge($tradingview, whitelist);     
+            //if (isset($_SERVER['REMOTE_ADDR']) && (!in_array($_SERVER['REMOTE_ADDR'], $whitelist))) {
+            //  logger::error('Request received from invalid address: ' . $_SERVER['REMOTE_ADDR']);
+            //}
+            
             $rawPostText = file_get_contents('php://input');
             $postArgs = [];
             if (isset($_GET['command'])) {
@@ -160,9 +163,13 @@
             if (requiredParams($this->params,['stub','command']) !== false) {
                 $stub = $this->params['stub'];
                 $command = $this->params['command'];
-                $accounts = array_change_key_case(accounts, CASE_LOWER);
-                if (($stub == '__frostybot__') || (array_key_exists($stub, $accounts))) {
-                    if ($stub !== '__frostybot__') {
+                if ($command == 'config') {  // Don't load config if we are busy configuring it
+                    $this->params['stub_update'] = $stub;
+                    $stub = '__frostybot__';
+                }
+                $accounts = config::get();
+                if (($stub == '__frostybot__') || ($command == 'config') || (array_key_exists($stub, $accounts))) {
+                    if (($stub !== '__frostybot__') && ($command !== 'config')) {
                         $config = $accounts[$stub];
                         $symbolmap = (isset($config['symbolmap']) ? $config['symbolmap'] : []);
                         $defaultsymbol = (isset($symbolmap['default']) ? $symbolmap['default'] : null);
@@ -177,11 +184,16 @@
                         $this->exchange = new exchange($config['exchange'],$config['parameters']);
                     }
                     switch (strtoupper($command)) {
-                        case 'CONFIG'       :   $result = censorConfig($accounts);
+                        case 'CONFIG'       :   $result = config::manage($this->params);
+                                                break;
+                        case 'INIT'         :   $db = new db();
+                                                $result = $db->initialize();
                                                 break;
                         case 'LOG'          :   $result = logger::get($this->params);
                                                 break;
-                        case 'FLUSHCACHE'   :   $result = flushCache(0, (isset($this->params['permanent']) ? $this->params['permanent'] : false));
+                        case 'FLUSHCACHE'   :   $result = cache::flush(0, (isset($this->params['permanent']) ? (bool) $this->params['permanent'] : false));
+                                                break;
+                        case 'WHITELIST'    :   $result = whitelist::manage($this->params);
                                                 break;
                         case 'UNITTESTS'    :   $result = unitTests::runTests(requiredParams($this->params,['group']));
                                                 break;

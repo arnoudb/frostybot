@@ -33,7 +33,7 @@
             ];*/
         }
 
-        // Get OHLCV data from FrostyAPI (The Deribit API does not provide this data)
+        // Get OHLCV data from FrostyAPI 
         public function fetch_ohlcv($symbol, $timeframe, $count=100) {
             logger::debug('Fetching OHLCV from FrostyAPI...');
             $symbolmap = [

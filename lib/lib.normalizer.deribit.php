@@ -85,7 +85,7 @@
         public function fetch_ohlcv($symbol, $timeframe, $count=100) {
             logger::debug('OHLCV data is not available for Deribit due to API limitations. Generating OHLCV from trade history...');
             $apiurl = str_replace('https://','',strtolower($this->ccxt->urls['api']));
-            $tradecache = getCache('deribit:trade:history:'.$apiurl.':'.$symbol);
+            $tradecache = cache::get('deribit:trade:history:'.$apiurl.':'.$symbol);
             if ($tradecache === false) {
                 $tradecache = [];
                 $trades = [];
@@ -126,7 +126,7 @@
                 $time_end = time();
                 $duration = $time_end - $time_start;
             } while (!(($duration < 60) && (count($ohlcv) > $count)));
-            setCache('deribit:trade:history:'.$apiurl.':'.$symbol,$trades,true);
+            cache::set('deribit:trade:history:'.$apiurl.':'.$symbol,$trades,true);
             logger::debug('Raw trades obtained: '.count($trades).' ('.count($tradecache).' from cache)');
             $ohlcv = $this->parse_trades($symbol, $timeframe, $trades);
             return $ohlcv;

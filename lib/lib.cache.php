@@ -1,52 +1,85 @@
 <?php
 
-    function getCache($key,$timeout=false) {
-        $cachefile = trim(cachedir,'/').'/'.($timeout === false ? 'perm' : 'temp').'.'.md5($key).'.json';
-        if (file_exists($cachefile)) {
-            $filetime = filemtime($cachefile);
-            $curtime = time();
-            $fileage = $curtime - $filetime;
-            if (($fileage <= $timeout) || ($timeout === false)) {
-                logger::debug('Cache hit: '.$key. ' ('.md5($key).')');
-                return json_decode(file_get_contents($cachefile));
-            } else {
-                unlink($cachefile);
-            }
-        }
-        logger::debug('Cache miss: '.$key);
-        return false;
-    }
+    // Garbage collection settings
 
-    function setCache($key,$data,$permanent=false) {
-        $cachefile = trim(cachedir,'/').'/'.($permanent === false ? 'temp' : 'perm').'.'.md5($key).'.json';
-        if ((!file_exists($cachefile)) || ($permanent === true)) {
-            file_put_contents($cachefile,json_encode($data,JSON_PRETTY_PRINT));
-            return true;
-        } 
-        return false;
-    }
+    const cachegcage = 5;                   // Delete cache files older than 5 days during garbage collection
+    const cachegcpct = 20;                  // Garbage collection probability percentage
 
-    function flushCache($days, $permanent=false) {
-        $total = 0;
-        foreach(glob(trim(cachedir,'/').'/'.($permanent !== true ? 'temp.' : '').'*.json') as $cachefile) {      // Exchange output normalizers
-            $filetime = filemtime($cachefile);
-            $curtime = time();
-            $fileage = $curtime - $filetime;
-            $dayage = $fileage / 86400;
-            if ($dayage > $days) {
-                $total++;
-                unlink($cachefile);
+    // Cache handler
+
+    class cache {
+
+        public static function get($key,$timeout=false) {
+            $keymd5 = md5($key);
+            $db = new db();
+            $query = ['key' => $keymd5];
+            $result = $db->select('cache', $query);
+            if (count($result) == 1) {
+                $row = $result[0];
+                $ts = $row->timestamp;
+                $perm = (bool) $row->permanent;
+                $data = json_decode($row->data);
+                $now = time();
+                $age = $now - $ts;
+                if (($age <= $timeout) || ($perm === true)) {
+                    logger::debug('Cache hit: '.$key. ' ('.$keymd5.')');
+                    return $data;
+                } else {
+                    $db->delete('cache',['key'=>$keymd5]);
+                }                
             }
+            logger::debug('Cache miss: '.$key.' ('.$keymd5.')');
+            return false;
         }
-        logger::debug('Cache flush completed: '.$total.' files deleted');
-        return $total;
+    
+        public static function set($key,$data,$permanent=false) {
+            $db = new db();
+            $keymd5 = md5($key);
+            $data = [
+                'key' => $keymd5,
+                'permanent' => ($permanent === true ? '1' : '0'),
+                'timestamp' => time(),
+                'data' => json_encode($data,JSON_PRETTY_PRINT),
+            ];
+            $db->delete('cache',['key'=>$keymd5]);
+            if ($db->insert('cache',$data)) {
+                logger::debug('Cache set: '.$key.' ('.$keymd5.')');
+                return true;
+            }
+            logger::debug('Cache fail: '.$key.' ('.$keymd5.')');
+            return false;
+        }
+    
+        public static function flush($days, $permanent=false) {
+            $db = new db();
+            $total = 0;
+            $result = $db->select('cache');
+            foreach ($result as $row) {
+                $key = $row->key;
+                $ts = $row->timestamp;
+                $perm = (bool) $row->permanent;
+                $data = json_decode($row->data);
+                $now = time();
+                $age = $now - $ts;
+                $dayage = $age / 86400;
+                if (($dayage > $days) && ($permanent === $perm)) {
+                    if ($db->delete('cache',['key' => $key])) {
+                        $total++;
+                    }
+                }                
+            }
+            logger::debug('Cache flush completed: '.$total.' entries deleted');
+            return $total;
+         }
+    
+
     }
 
     // Run random garbage collection for cache files older than 5 days
     $randomgc = rand(0,100);
     if ($randomgc >= (100 - cachegcpct)) {
         logger::debug('Garbage collection triggered, flushing cache older than '.cachegcage.' days...');
-        flushCache(cachegcage);
+        cache::flush(cachegcage);
     }
 
 ?>

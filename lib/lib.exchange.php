@@ -95,11 +95,11 @@
             $period = ((floor((time() / 60) / $timeframe) * $timeframe) * 60) + ($timeframe * 60);
             $cacheTime = (count($ohlcvTimeframes) == 0 ? 60 : $period - time());  // Reduce cache time if we are using trade data to generatw OHLCV (no OHLCV support on exchange API)
             $key = $this->exchange.':ohlcv:'.$symbol.':'.$timeframe.':'.$period.':'.$qty;
-            if ($cacheResult = getCache($key,$cacheTime)) {
+            if ($cacheResult = cache::get($key,$cacheTime)) {
                 $ohlcv = $cacheResult;
             } else {
                 $ohlcv = $this->normalizer->fetch_ohlcv($symbol,$gettf,$qty);
-                setCache($key,$ohlcv);
+                cache::set($key,$ohlcv);
             }
             if ($bucketize !== false) {
                 $ohlcv = bucketize($ohlcv, $timeframe);
@@ -135,7 +135,7 @@
         // Get market data for all markets
         public function markets($tickers = true, $cachetime = 0) {
             $key = $this->exchange.':markets';
-            if ($cacheResult = getCache($key,$cachetime)) {
+            if ($cacheResult = cache::get($key,$cachetime)) {
                 return $cacheResult;
             } else {
                 $markets = $this->fetch_markets();
@@ -149,7 +149,7 @@
                     }
                     $ret[] = $market;
                 }
-                setCache($key,$ret);
+                cache::set($key,$ret);
                 return $ret;
             }
         }
