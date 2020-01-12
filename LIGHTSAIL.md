@@ -54,7 +54,7 @@ This document is a quick and dirty walkthrough to show you how to set up a Amazo
 
   ![Lightsail10](https://i.imgur.com/jGsqePL.png)
 
-* Once you have opened the console, you can proceed to install Frostybot using the install script. All you need to type in the console is the following 3 commands:
+* Once you have opened the console, you can proceed to install Frostybot using the install script. All you need to type in the console is the following 3 commands (you can also copy/paste them into the console):
 
       wget -4 https://tinyurl.com/frostybot-installer -O /tmp/install.sh
       chmod 700 /tmp/install.sh
