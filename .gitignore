@@ -4,3 +4,4 @@ cfg/cfg.config.php
 cache/*.json
 frostybot-dev.code-workspace
 install.sh
+*.db-shm
