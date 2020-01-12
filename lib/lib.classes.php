@@ -50,7 +50,7 @@
         public $close;
         public $volume;
         public $complete;
-        //public $raw;        // For debugging
+        //public $raw;        
 
         public function __construct($symbol,$timeframe,$timestamp,$open,$high,$low,$close,$volume,$raw = null) {
             $this->symbol = $symbol;
@@ -63,7 +63,9 @@
             $this->close = $close;
             $this->volume = $volume;
             $this->complete = ($timestamp < time('UCT'));
-            //$this->raw = $raw;      // For debugging
+            //if (debug === true) {
+            //    $this->raw = $raw;      
+            //}
         }
 
     }
@@ -106,7 +108,7 @@
         public $bid;
         public $ask;
         public $contract_size;
-        //public $raw;        // For debugging
+        //public $raw;        
 
         public function __construct($id,$symbol,$base,$quote,$expiration,$bid,$ask,$contractSize,$raw = null) {
             $this->id = $id;
@@ -117,7 +119,9 @@
             $this->bid = $bid;
             $this->ask = $ask;
             $this->contract_size = $contractSize;
-            //$this->raw = $raw;   // For debugging
+            //if (debug === true) {
+            //    $this->raw = $raw;   
+            //}
         }
 
     }
@@ -135,7 +139,7 @@
         public $value_entry;
         public $value_current;
         public $pnl;
-        //public $raw;        // For debugging
+        //public $raw;        
 
         public function __construct($market,$direction,$baseSize,$quoteSize,$entryPrice,$raw = null) {
             $this->market = $market;
@@ -148,7 +152,9 @@
             $this->value_entry = round(abs($this->price_entry * $baseSize),4);
             $this->value_current = round(abs($this->price_current * $baseSize),4);
             $this->pnl = $this->value_current - $this->value_entry;
-            //$this->raw = $raw;      // For debugging
+            //if (debug === true) {
+            //    $this->raw = $raw;     
+            //}
         }
 
     }
@@ -168,7 +174,7 @@
         public $filled_quote = 0;
         public $filled = false;
         public $status;
-        //public $raw;              // For debugging
+        //public $raw;              
 
         public function __construct($market,$id,$timestamp,$type,$direction,$price,$trigger,$sizeBase,$sizeQuote,$filledBase,$filledQuote,$status,$raw = null) {
             $this->market = $market;
@@ -184,7 +190,9 @@
             $this->filled_quote = $filledQuote;
             $this->filled = $filledBase >= $sizeBase ? true : false;
             $this->status = $status;
-            //$this->raw = $raw;    // For debugging
+            //if (debug === true) {
+            //    $this->raw = $raw;    
+            //}
         }
 
     }
