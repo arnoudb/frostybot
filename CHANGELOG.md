@@ -134,6 +134,7 @@ maximum position size (which we wanted).</li>
 <li>wrote emulation code to generate "ohlcv" data for Deribit, since the exchange lacks ohlcv support</li>
 <li>added unit test capabilties to provide accelerated testing during development (lib.unittests.php)</li>
 <li>added install script to aid with download and install of Frostybot (https://tinyurl.com/frostybot-installer)</li>
+<li>introduced a new central FrostyAPI (https://api.frostytrading.com) which is currently being used to get OHLCV data for Bitmex and Deribit. In the future, this central API could be used by all the Frostybots for various enhancements, such as version control, usage statistics, backtesting, notifications, trade analytics etc. For now though, it's only being used for OHLCV data.</li>
 </ul></td>
   </tr>
 </table>
