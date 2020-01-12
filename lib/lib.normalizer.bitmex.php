@@ -63,7 +63,7 @@
             $result = $data->result;
             $markets = [];
             foreach($result as $market) {
-                if (($market['type'] != 'option') && ($market['quote'] == 'USD') && ($market['active'] == true) && ($market['info']['typ'] == 'FFWCSX')) {
+                if (($market['quote'] == 'USD') && ($market['active'] == true) && ($market['info']['typ'] == 'FFWCSX')) {
                     $id = $market['id'];
                     $symbol = $market['symbol'];
                     $quote = $market['quote'];
