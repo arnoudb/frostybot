@@ -150,7 +150,7 @@ If you would prefer not to use git, you can also manually download and unzip the
  
  * Add your Exchange API account information to the bot configuration using the **config** command as follows:
 
-       ./frostybot config stub=deribitdemo exchange=deribit apiKey="<your api key>" secret="<your api sectret>" description="Deribit Test Account" testnet=true
+       ./frostybot config stub=deribitdemo exchange=deribit apiKey="<your api key>" secret="<your api secret>" description="Deribit Test Account" testnet=true
 
   The **stub** parameter can be anything you like, as long as it's alphanumeric with no spaces. You will use the **stub** when sending commands to the bot, so make it something short and simple. I've just called it "deribitdemo", but if you wanted to use 2 accounts on deribit, you could call the one stub "deribitmain" and the other one "deribittest" for example, it's entirely up to you.
   
