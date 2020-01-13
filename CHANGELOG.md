@@ -123,18 +123,20 @@ maximum position size (which we wanted).</li>
 <li>support for FTX exchange added</li>
 <li>redeveloped Frostybot from the ground up using object-oriented code as far as possible</li>
 <li>all output is now in JSON object format to allow for easy integration and scripting</li>
-<li>changed the config structure to use a single file for easier configuration (cfg.config.php);</li>
-<li>config allows for the mapping of custom symbols to market symbols so that you can keep the same custom symbols across multiple exchanges. This also allows you to specify a default symbol so that you do not need to enter the symbol param all the time.</li>
+<li>all account configs are now stored in the SQLite database. accounts can be added, updated and removed using the CONFIG command.</li>
+<li>config allows for the mapping of custom symbols to market symbols so that you can keep the same custom symbols across multiple exchanges. This also allows you to specify a default symbol so that you do not need to enter the symbol param all the time. these mappings are stored in the SQLite database.</li>
 <li>added open/high/low/close/volume (ohlcv) function to get data for future planned charting capabilities</li>
-<li>added caching mechanism to speed up response time and reduce exchange traffic for certain functions (lib.cache.php)</li>
+<li>added caching mechanism to speed up response time and reduce exchange traffic for certain functions (lib.cache.php). cache data is stored in the SQLite database.</li>
 <li>added SQLLite support for ohlcv data and request caching and in preparation for future capabilities (lib.database.php)</li>
 <li>added error and exception handlers to ensure that all messages are captured and outputted to JSON (lib.output.php)</li>
 <li>exchange output normalizers are now extended classes and produce predefined objects (lib.classes.php) in a consistent way across all supported exchanges (lib.normalizer.*.php). </li>
 <li>a lot of work done to ensure that all exchanges support the same commands in exactly the same way with the same output structure.</li>
-<li>wrote emulation code to generate "ohlcv" data for Deribit, since the exchange lacks ohlcv support</li>
+<li>wrote emulation code to generate "ohlcv" data for Deribit, since the exchange lacks ohlcv support, but since this code has to generate ohlcv data from thousands of individual trades, it is extremely slow. To avoid this, there is now a centrallised API at api.frostytrading.com that will server ohclv data from deribit and bitmex. more information is further down.</li>
 <li>added unit test capabilties to provide accelerated testing during development (lib.unittests.php)</li>
 <li>added install script to aid with download and install of Frostybot (https://tinyurl.com/frostybot-installer)</li>
 <li>introduced a new central FrostyAPI (https://api.frostytrading.com) which is currently being used to get OHLCV data for Bitmex and Deribit. In the future, this central API could be used by all the Frostybots for various enhancements, such as version control, usage statistics, backtesting, notifications, trade analytics etc. For now though, it's only being used for OHLCV data.</li>
-</ul></td>
+<li>all caching, account information, symbol mappings and whitelist IP addresses are now stored in the SQLite database.</li>
+</ul>
+</td>
   </tr>
 </table>
