@@ -67,6 +67,12 @@
                 }
                 $data['parameters']['headers']['FTX-SUBACCOUNT'] = $params['subaccount'];  // Required when using sub accounts on FTX
             }
+            if (is_null($data['parameters']['urls'])) {
+                unset($data['parameters']['urls']);
+            }
+            if (is_null($data['parameters']['headers'])) {
+                unset($data['parameters']['headers']);
+            }
             return self::insertOrUpdate($data);
             
         }
