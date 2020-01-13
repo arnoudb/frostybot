@@ -67,7 +67,7 @@ Its recommended to use sub-accounts to limit risk. First follow the instructions
 
 * Add your Exchange API account information to the bot configuration using the **config** command as follows:
 
-      ./frostybot config stub=deribitdemo exchange=deribit apiKey="\<your api key\>" secret="\<your api sectret\>" description="Deribit Test Account" testnet=true
+      ./frostybot config stub=deribitdemo exchange=deribit apiKey="<your api key>" secret="<your api sectret>" description="Deribit Test Account" testnet=true
 
   The **stub** parameter can be anything you like, as long as it's alphanumeric with no spaces. You will use the **stub** when sending commands to the bot, so make it something short and simple. I've just called it "deribitdemo", but if you wanted to use 2 accounts on deribit, you could call the one stub "deribitmain" and the other one "deribittest" for example, it's entirely up to you.
   
@@ -81,7 +81,7 @@ Its recommended to use sub-accounts to limit risk. First follow the instructions
        
   If you would like to remove a config, use the command like this:
   
-       ./frostybot config stub=deribitmain delete=true
+       ./frostybot config stub=deribitdemo delete=true
   
   If you just want to update an existing config, just rerun the config command with the same stub name and the other values will be updated.
 
@@ -112,11 +112,11 @@ To get a list of supported symbols for an exchange, use the following command:
 
 *Note:* This error is expected, but its a good way to check if your bot is responding over http/https. You will receive this specific error because the bot has built-in security that will only accept http/https requests from Tradingview's servers. You can still communicate directly with Frostybot using CLI commands. If you need to communicate to the bot over http, you will need to add your IP address into the "whitelist" by using the following command:
 
-        ./frostybot whitelist add="\<ip address\>" description="A description for your own info"
+        ./frostybot whitelist add="<ip address>" description="An optional description for your own info"
        
 By default, only Tradingview's servers have access over http/https. Any other machines that you want to allow to access the bot will need to be added to the whitelist. If you want to remove an IP address from the whitelist, use this command:
 
-        ./frostybot whitelist delete="\<ip address\>"
+        ./frostybot whitelist delete="<ip address>"
 
 Note that you cannot delete the default Tradinfview addresses in the whitelist, as they are protected against deletion. 
 
