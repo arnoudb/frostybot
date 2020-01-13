@@ -3,3 +3,4 @@ frostybot-dev.code-workspace
 install.sh
 *.db-shm
 db/database.db
+*.log
