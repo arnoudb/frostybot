@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on Sun Jan 12 20:04:04 2020
+-- File generated with SQLiteStudio v3.2.1 on Mon Jan 13 00:31:38 2020
 --
 -- Text encoding used: System
 --
@@ -17,6 +17,111 @@ CREATE TABLE accounts (
     exchange    VARCHAR (20)  NOT NULL,
     parameters  TEXT          NOT NULL
 );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'ftxmain',
+                         'FTX Main Account',
+                         'ftx',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123"
+}'
+                     );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'ftxsub',
+                         'FTX Sub Account',
+                         'ftx',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123",
+    "headers": {
+        "FTX-SUBACCOUNT": "MySubAccount"
+    }
+}'
+                     );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'deribitmain',
+                         'Deribit Main Account',
+                         'deribit',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123"
+}'
+                     );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'deribittest',
+                         'Deribit Test Account',
+                         'deribit',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123",
+    "urls": {
+        "api": "https:\/\/test.deribit.com"
+    }
+}'
+                     );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'bitmexmain',
+                         'Bitmex Main Account',
+                         'bitmex',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123"
+}'
+                     );
+
+INSERT INTO accounts (
+                         stub,
+                         description,
+                         exchange,
+                         parameters
+                     )
+                     VALUES (
+                         'bitmextest',
+                         'Bitmex Test Account',
+                         'bitmex',
+                         '{
+    "apiKey": "123CBA123CBA",
+    "secret": "ABC123abc123",
+    "urls": {
+        "api": "https:\/\/testnet.bitmex.com"
+    }
+}'
+                     );
 
 
 COMMIT TRANSACTION;
