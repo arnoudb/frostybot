@@ -118,7 +118,7 @@ By default, only Tradingview's servers have access over http/https. Any other ma
 
         ./frostybot whitelist delete="<ip address>"
 
-Note that you cannot delete the default Tradinfview addresses in the whitelist, as they are protected against deletion. 
+Note that you cannot delete the default Tradingview addresses in the whitelist, as they are protected against deletion. 
 
 Once you've confirmed that Frostybot is responding over the internet, you can start creating Tradingview alerts:
 
