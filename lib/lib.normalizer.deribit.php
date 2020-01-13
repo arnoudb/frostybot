@@ -196,7 +196,31 @@
             }
         }
 
-
+        // Parse order result
+        public function parse_order($market, $order) {
+            if (isset($order['result'])) {
+                if (isset($order['result']['order'])) {
+                    $order = $order['result']['order'];  // Fix some inconsistency in the API
+                } else {
+                    $order = $order['result'];  // Fix some inconsistency in the API
+                }
+            }
+            $id = $order['orderId'];
+            $timestamp = strtotime($order['created']);
+            $type = str_replace('_','',strtolower($order['type']));
+            $direction = (strtolower($order['direction']) == 'buy' ? 'long' : 'short');
+            $price = (isset($order['price']) ? $order['price'] : 1);
+            $trigger = (isset($order['stopPx']) ? $order['stopPx'] : null);
+            if ($type == "stopmarket") { $price = $trigger; }
+            $sizeBase = $order['amount'] / $price;
+            $sizeQuote = $order['amount'];
+            $filledBase = (isset($order['filledAmount']) ? $order['filledAmount'] / $price : 0);
+            $filledQuote = (isset($order['filledAmount']) ? $order['filledAmount'] : 0);
+            $status = (strtolower($order['state']) == 'untriggered' ? 'open' : strtolower($order['state']));
+            $orderRaw = $order;
+            return new orderObject($market,$id,$timestamp,$type,$direction,$price,$trigger,$sizeBase,$sizeQuote,$filledBase,$filledQuote,$status,$orderRaw);
+        }
+        
         // Get list of orders from exchange
         public function fetch_orders($markets, $onlyOpen = false) {
             $ordersHistory = ($onlyOpen === true ? ['result' => []] : $this->ccxt->private_get_orderhistory());
@@ -211,20 +235,7 @@
             foreach ($orders as $order) {
                 foreach ($markets as $market) {
                     if ($order['instrument'] === $market->symbol) {
-                        $id = $order['orderId'];
-                        $timestamp = strtotime($order['created']);
-                        $type = str_replace('_','',strtolower($order['type']));
-                        $direction = (strtolower($order['direction']) == 'buy' ? 'long' : 'short');
-                        $price = (isset($order['price']) ? $order['price'] : 1);
-                        $trigger = (isset($order['stopPx']) ? $order['stopPx'] : null);
-                        if ($type == "stopmarket") { $price = $trigger; }
-                        $sizeBase = $order['amount'] / $price;
-                        $sizeQuote = $order['amount'];
-                        $filledBase = (isset($order['filledAmount']) ? $order['filledAmount'] / $price : 0);
-                        $filledQuote = (isset($order['filledAmount']) ? $order['filledAmount'] : 0);
-                        $status = (strtolower($order['state']) == 'untriggered' ? 'open' : strtolower($order['state']));
-                        $orderRaw = $order;
-                        $result[] = new orderObject($market,$id,$timestamp,$type,$direction,$price,$trigger,$sizeBase,$sizeQuote,$filledBase,$filledQuote,$status,$orderRaw);
+                        $result[] = $this->parse_order($market, $order);
                     }
                 }
             }

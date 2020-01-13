@@ -13,7 +13,7 @@
         }
 
         public function initialize() {
-            foreach(glob('db/*.sql') as $sqlFile) {
+            foreach(glob('db/sql/*.sql') as $sqlFile) {
                 $filename = basename($sqlFile);
                 $table = str_replace('.sql','',strtolower($filename));
                 $this->exec('DROP TABLE '.$table.';');
@@ -45,10 +45,10 @@
             return false;
         }
 
-        public function select($table, $data = []) {
-            $data = (is_object($data) ? (array) $data : $data);
+        public function select($table, $where = []) {
+            $where = (is_object($where) ? (array) $where : $where);
             $wherelist = [];
-            foreach ($data as $key => $value) {
+            foreach ($where as $key => $value) {
                 $wherelist[] = "`".$key."`='".$value."'";
             }
             $sql = "SELECT * FROM `".$table."`".(count($wherelist) > 0 ? " WHERE ".implode(' AND ', $wherelist) : "").";";
@@ -63,6 +63,7 @@
                 $vallist[] = $value;
             }
             $sql = "INSERT INTO `".$table."` (`".implode("`,`", $collist)."`) VALUES ('".implode("','", $vallist)."');";
+            $sql = str_replace("'CURRENT_TIMESTAMP'","CURRENT_TIMESTAMP", $sql);
             //logger::debug($sql);
             return $this->exec($sql);
         }
@@ -79,8 +80,18 @@
                 $wherelist[] = "`".$key."`='".$value."'";
             }
             $sql = "UPDATE `".$table."` SET ".implode(',', $datalist).(count($wherelist) > 0 ? " WHERE ".implode(' AND ', $wherelist) : "").";";
+            $sql = str_replace("'CURRENT_TIMESTAMP'","CURRENT_TIMESTAMP", $sql);
             //logger::debug($sql);
             return $this->exec($sql);
+        }
+
+        public function insertOrUpdate($table, $data, $where) {
+            $result = $this->select($table, $where);
+            if (count($result) == 1) {
+                return $this->update($table, $data, $where);
+            } else {
+                return $this->insert($table, $data);
+            }
         }
 
         public function delete($table, $data = []) {

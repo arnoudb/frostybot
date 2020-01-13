@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on Sun Jan 12 20:03:45 2020
+-- File generated with SQLiteStudio v3.2.1 on Mon Jan 13 17:41:08 2020
 --
 -- Text encoding used: System
 --
@@ -10,8 +10,8 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS cache;
 
 CREATE TABLE cache (
-    [key]     VARCHAR (32) PRIMARY KEY
-                           UNIQUE
+    uid       INTEGER      PRIMARY KEY AUTOINCREMENT,
+    [key]     VARCHAR (32) UNIQUE
                            NOT NULL,
     permanent BOOLEAN      NOT NULL
                            DEFAULT (0),

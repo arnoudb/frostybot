@@ -276,6 +276,7 @@
 
         // Perform Trade
         private function trade($direction, $params) {
+            $stub = $params['stub'];
             $symbol = $params['symbol'];
             $market = $this->market(['symbol' => $symbol]);
             $size = $params['size'];
@@ -310,7 +311,24 @@
                 $balance = $this->total_balance_usd();
                 $comment = isset($params['comment']) ? $params['comment'] : 'None';
                 logger::info('TRADE:'.strtoupper($direction).' | Symbol: '.$symbol.' | Type: '.$type.' | Size: '.($requestedSize * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
-                return $this->ccxt->create_order($symbol, $type, ($direction == "long" ? "buy" : "sell"), abs($requestedSize), $price);
+                $rawResult = $this->ccxt->create_order($symbol, $type, ($direction == "long" ? "buy" : "sell"), abs($requestedSize), $price);
+                $orderresult = $this->normalizer->parse_order($market, $rawResult['info']);
+                if (isset($params['stoptrigger'])) {
+                    $slparams = [
+                        'symbol' => $symbol,
+                        'stoptrigger' => $params['stoptrigger'],
+                        'size' => (isset($params['stopsize']) ? $params['stopsize'] : $requestedSize),
+                        'stopprice' => (isset($params['stopprice']) ? $params['stopprice'] : null),
+                        'reduce' => (isset($params['reduce']) ? $params['reduce'] : false)
+                    ];
+                    $slresult = $this->stoploss($slparams);
+                    $linkedOrder = new linkedOrderObject($stub, $symbol);
+                    $linkedOrder->add($orderresult);
+                    $linkedOrder->add($slresult);
+                    return $linkedOrder;
+                } else {
+                    return $orderresult;
+                }
             }
             return false;
         }
@@ -330,10 +348,10 @@
         // Buy or Sell is automatically determined by comparing the 'trigger' price and current market price. This is a required parameter.
         public function stoploss($params) {
             $symbol = $params['symbol'];
-            $trigger = $params['trigger'];
+            $trigger = $params['stoptrigger'];
             $market = $this->market(['symbol' => $symbol]);
             $size = isset($params['size']) ? $params['size'] : $this->positionSize($symbol);    // Use current position size is no size is provided
-            $price = isset($params['price']) ? $params['price'] : null;
+            $price = isset($params['stopprice']) ? $params['stopprice'] : null;
             $type = is_null($price) ? 'market' : 'limit';
             $reduce = isset($params['reduce']) ? $params['reduce'] : false;
             $direction = ($trigger > $market->ask) ? 'buy' : ($trigger < $market->bid ? 'sell' : null);
@@ -341,7 +359,8 @@
                 logger::error('Could not determine direction of stop loss order because the trigger price is inside the spread. Adjust the trigger price and try again.');
             }
             if ($size > 0) {
-                return $this->normalizer->create_stoploss($market->id, $direction, $size, $trigger, $price, $reduce);
+                $result = $this->normalizer->create_stoploss($market->id, $direction, $size, $trigger, $price, $reduce);
+                return $this->normalizer->parse_order($market, $result);
             } else {
                 logger::error("Could not automatically determine the size of the stop loss order (perhaps you don't currently have any open positions). Please try again and provide the 'size' parameter.");
             }

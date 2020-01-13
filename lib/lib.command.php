@@ -189,6 +189,8 @@
                         case 'INIT'         :   $db = new db();
                                                 $result = $db->initialize();
                                                 break;
+                        case 'CRON'         :   $result = cron::run($this->params);
+                                                break;
                         case 'LOG'          :   $result = logger::get($this->params);
                                                 break;
                         case 'FLUSHCACHE'   :   $result = cache::flush(0, (isset($this->params['permanent']) ? (bool) $this->params['permanent'] : false));
@@ -227,7 +229,7 @@
                                                 break;
                         case 'CLOSE'        :   $result = $this->exchange->close(requiredParams($this->params,['symbol']));
                                                 break;
-                        case 'STOPLOSS'     :   $result = $this->exchange->stoploss(requiredParams($this->params,['symbol','trigger']));
+                        case 'STOPLOSS'     :   $result = $this->exchange->stoploss(requiredParams($this->params,['symbol','stoptrigger']));
                                                 break;
                         default             :   logger::error('Unknown command: '.$command);
                                                 $result = false;

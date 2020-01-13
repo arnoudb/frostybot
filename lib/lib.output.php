@@ -83,6 +83,9 @@
                 $result['type'] = strtoupper($this->type);
             }
             if (!is_null($this->data)) {
+                if(is_object($this->data)) {
+                    $result['class'] = get_class($this->data);
+                }
                 $result['data'] = $this->data;
             }
             return (object) $result;

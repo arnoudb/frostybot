@@ -11,6 +11,7 @@
     include('lib/lib.classes.php');         // Class definitions
     include('lib/lib.common.php');          // Commonly used function library
     include('lib/lib.frostyapi.php');       // Communication to Frostybot central API (api.frostytrading.com)
+    include('lib/lib.cron.php');            // Background task scheduler
     include('lib/lib.whitelist.php');       // Whitelist Manager for HTTP/HTTPS requests
     include('ccxt/ccxt.php');               // CCXT wrapper
     include('lib/lib.normalizer.php');      // Normalizer base class

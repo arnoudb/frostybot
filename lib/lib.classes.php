@@ -197,5 +197,65 @@
 
     }
 
+    class linkedOrderObject extends frostyObject {
+
+        public $id;
+        public $stub;
+        public $symbol;
+        public $status = 0;
+        public $orders = [];
+
+        public function __construct($id = null) {
+            $args = func_get_args();
+            if ( (count($args) == 1) && ( strlen($args[0]) == 32) ) {   // Just the id which is used to load the object from database     
+                $this->id = $args[0];
+                $this->retrieve();
+            }
+            if (count($args) == 2) {                                    // Stub and Symbol which is used to create new linked objects
+                list($stub, $symbol) = $args;
+                $this->id = md5(uniqid('',true));
+                $this->stub = $stub;
+                $this->symbol = $symbol;
+            }
+
+        }
+
+        public function add($order) {
+            $this->orders[$order->id] = $order;
+            $this->save();
+        }
+
+        private function save() {
+            $db = new DB();
+            $data = [
+                'modified'  => 'CURRENT_TIMESTAMP',
+                'id'        => $this->id,
+                'status'    => $this->status,
+                'stub'      => $this->stub,
+                'symbol'    => $this->symbol,
+                'orders'    => json_encode($this->orders, JSON_PRETTY_PRINT),
+            ];
+            if ($db->insertOrUpdate('linkedorders', $data, ['id'=>$this->id])) {
+                logger::debug('Succesfully Saved linked order '.$this->id.' to the database');
+                return true;
+            } else {
+                logger::debug('Error saving linked order '.$this->id.' to the database');
+                return true;
+            }
+        }
+
+        private function retrieve() {
+            $db = new DB();
+            $result = $db->select('linkedorders', ['id'=>$this->id]);
+            if (count($result) == 1) {
+                $row = $result[0];
+                $this->stub = $row->stub;
+                $this->symbol = $row->symbol;
+                $this->status = $row->status;
+                $this->orders = json_decode($row->orders);
+            }
+        }
+
+    }
 
 ?>

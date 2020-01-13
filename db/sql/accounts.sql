@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on Mon Jan 13 00:31:38 2020
+-- File generated with SQLiteStudio v3.2.1 on Mon Jan 13 17:45:33 2020
 --
 -- Text encoding used: System
 --
@@ -10,21 +10,23 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS accounts;
 
 CREATE TABLE accounts (
+    uid         INTEGER       PRIMARY KEY AUTOINCREMENT,
     stub        VARCHAR (20)  UNIQUE
-                              NOT NULL
-                              PRIMARY KEY,
+                              NOT NULL,
     description VARCHAR (100),
     exchange    VARCHAR (20)  NOT NULL,
     parameters  TEXT          NOT NULL
 );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         1,
                          'ftxmain',
                          'FTX Main Account',
                          'ftx',
@@ -35,12 +37,14 @@ INSERT INTO accounts (
                      );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         2,
                          'ftxsub',
                          'FTX Sub Account',
                          'ftx',
@@ -54,12 +58,14 @@ INSERT INTO accounts (
                      );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         3,
                          'deribitmain',
                          'Deribit Main Account',
                          'deribit',
@@ -70,12 +76,14 @@ INSERT INTO accounts (
                      );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         4,
                          'deribittest',
                          'Deribit Test Account',
                          'deribit',
@@ -89,12 +97,14 @@ INSERT INTO accounts (
                      );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         5,
                          'bitmexmain',
                          'Bitmex Main Account',
                          'bitmex',
@@ -105,12 +115,14 @@ INSERT INTO accounts (
                      );
 
 INSERT INTO accounts (
+                         uid,
                          stub,
                          description,
                          exchange,
                          parameters
                      )
                      VALUES (
+                         6,
                          'bitmextest',
                          'Bitmex Test Account',
                          'bitmex',

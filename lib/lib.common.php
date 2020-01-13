@@ -67,7 +67,7 @@
         }
         return $result;
     }
-
+    
     // Calculate Exponential moving average in a dataset
 
     function ema($data, $period = 9, $field = 'close', $emafield = 'ema') {

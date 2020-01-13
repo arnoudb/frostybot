@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.2.1 on Sun Jan 12 21:32:34 2020
+-- File generated with SQLiteStudio v3.2.1 on Mon Jan 13 17:42:05 2020
 --
 -- Text encoding used: System
 --
@@ -10,35 +10,41 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS exchanges;
 
 CREATE TABLE exchanges (
-    exchange    VARCHAR (20)  PRIMARY KEY
-                              NOT NULL
+    uid         INTEGER       PRIMARY KEY AUTOINCREMENT,
+    exchange    VARCHAR (20)  NOT NULL
                               UNIQUE,
     description VARCHAR (100) NOT NULL
 );
 
 INSERT INTO exchanges (
+                          uid,
                           exchange,
                           description
                       )
                       VALUES (
+                          1,
                           'ftx',
                           'FTX'
                       );
 
 INSERT INTO exchanges (
+                          uid,
                           exchange,
                           description
                       )
                       VALUES (
+                          2,
                           'deribit',
                           'Deribit'
                       );
 
 INSERT INTO exchanges (
+                          uid,
                           exchange,
                           description
                       )
                       VALUES (
+                          3,
                           'bitmex',
                           'Bitmex'
                       );

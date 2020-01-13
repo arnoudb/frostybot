@@ -155,6 +155,23 @@
             }
         }
 
+        // Parse order result
+        public function parse_order($market, $order) {
+            $id = $order['orderID'];
+            $timestamp = strtotime($order['timestamp']);
+            $type = strtolower($order['ordType']);
+            $direction = (strtolower($order['side']) == 'buy' ? 'long' : 'short');
+            $price = (isset($order['price']) ? $order['price'] : 1);
+            $trigger = (isset($order['stopPx']) ? $order['stopPx'] : null);
+            $sizeBase = $order['orderQty'] / $price;
+            $sizeQuote = $order['orderQty'];
+            $filledBase = $order['cumQty'] / $price;
+            $filledQuote = is_null($order['cumQty']) ? 0 : $order['cumQty'];
+            $status = ((strtolower($order['ordStatus']) == 'new') ? 'open' : strtolower($order['ordStatus']));
+            $orderRaw = $order;
+            return new orderObject($market,$id,$timestamp,$type,$direction,$price,$trigger,$sizeBase,$sizeQuote,$filledBase,$filledQuote,$status,$orderRaw);
+        }
+     
         // Get list of orders from exchange
         public function fetch_orders($markets) {
             $orders = $this->ccxt->private_get_order();
@@ -162,19 +179,7 @@
             foreach ($orders as $order) {
                 foreach ($markets as $market) {
                     if ($order['symbol'] === $market->id) {
-                        $id = $order['orderID'];
-                        $timestamp = strtotime($order['timestamp']);
-                        $type = strtolower($order['ordType']);
-                        $direction = (strtolower($order['side']) == 'buy' ? 'long' : 'short');
-                        $price = (isset($order['price']) ? $order['price'] : 1);
-                        $trigger = (isset($order['stopPx']) ? $order['stopPx'] : null);
-                        $sizeBase = $order['orderQty'] / $price;
-                        $sizeQuote = $order['orderQty'];
-                        $filledBase = $order['cumQty'] / $price;
-                        $filledQuote = is_null($order['cumQty']) ? 0 : $order['cumQty'];
-                        $status = ((strtolower($order['ordStatus']) == 'new') ? 'open' : strtolower($order['ordStatus']));
-                        $orderRaw = $order;
-                        $result[] = new orderObject($market,$id,$timestamp,$type,$direction,$price,$trigger,$sizeBase,$sizeQuote,$filledBase,$filledQuote,$status,$orderRaw);
+                        $result[] = $this->parse_order($market, $order);
                     }
                 }
             }
