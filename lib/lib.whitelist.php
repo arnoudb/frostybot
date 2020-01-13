@@ -34,7 +34,7 @@
                 $canDelete[$ip->ipAddress] = (bool) $ip->canDelete;
             }
             $add = (isset($params['add']) ? $params['add'] : false);
-            $remove = (isset($params['remove']) ? $params['remove'] : false);
+            $remove = (isset($params['remove']) ? $params['remove'] : (isset($params['delete']) ? $params['delete'] : false));
             $description = (isset($params['description']) ? $params['description'] : '');
             if (($add !== false) && (!in_array($add, array_keys($canDelete)))) {
                 logger::info('Adding '.$add.' to the IP whitelist');
