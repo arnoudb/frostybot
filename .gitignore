@@ -1,6 +1,9 @@
 log/frostybot.log
 frostybot-dev.code-workspace
 install.sh
+testkeys.sh
+distkeys.sh
 *.db-shm
 db/database.db
 *.log
+log/frostybot.log

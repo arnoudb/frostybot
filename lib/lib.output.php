@@ -191,7 +191,7 @@
     class logger {
 
         static private function message($type, $message) {
-            $message = date('Y-m-d H:i:s').' | '.str_pad(strtoupper($type),6," ",STR_PAD_RIGHT).' | '.$message.PHP_EOL;
+            $message = date('Y-m-d H:i:s').' | '.str_pad(strtoupper($type),7," ",STR_PAD_RIGHT).' | '.$message.PHP_EOL;
             file_put_contents(logfile, $message, FILE_APPEND);
         }
 

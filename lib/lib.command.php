@@ -227,6 +227,8 @@
                                                 break;
                         case 'CLOSE'        :   $result = $this->exchange->close(requiredParams($this->params,['symbol']));
                                                 break;
+                        case 'STOPLOSS'     :   $result = $this->exchange->stoploss(requiredParams($this->params,['symbol','trigger']));
+                                                break;
                         default             :   logger::error('Unknown command: '.$command);
                                                 $result = false;
                                                 break;
@@ -243,7 +245,7 @@
                     if ($result !== false) {
                         outputResult(0,"SUCCESS",$result);
                     } else {
-                        outputResult(999,"ERROR",$false);
+                        outputResult(999,"ERROR",false);
                     }
                     //$__outputs__->outputResults();
                 } else {

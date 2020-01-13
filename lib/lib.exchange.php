@@ -51,7 +51,7 @@
                 }
             } else {
                 $info = [];
-                $keys = ['id','has','api','status','timeframes','urls'];
+                $keys = ['id','has','api','status','timeframes','urls','options'];
                 foreach($this->ccxt as $key => $val) {
                     if (in_array($key,$keys)) {
                         $info[$key] = $val;
@@ -61,79 +61,32 @@
             }
         }
 
-        // Get OHLCV data
-        public function ohlcv($params) {
-            $symbol = $params['symbol'];
-            $timeframe = timeframeToMinutes(isset($params['timeframe']) ? $params['timeframe'] : '1h');
-            $cacheTime = $timeframe / 2;
-            $count = isset($params['count']) ? $params['count'] : 100;
-            $ohlcvTimeframes = [];
-            $tfs = $this->normalizer->fetch_timeframes();
-            foreach ($tfs as $tfkey => $tf) {
-                $tfmin = timeframeToMinutes($tf);
-                if (!is_null($tfmin)) {
-                    $ohlcvTimeframes[timeframeToMinutes($tf)] = $tfkey;
-                }
-            }
-            if (!array_key_exists($timeframe, $ohlcvTimeframes)) {
-                $maxtf = 1;
-                foreach (array_keys($ohlcvTimeframes) as $tf) {
-                    if (($tf < $timeframe) && ($tf > $maxtf) && ($timeframe % $tf == 0)) {
-                        $maxtf = $tf;
-                    }
-                }
-                $gettf = (isset($ohlcvTimeframes[$maxtf]) ? $ohlcvTimeframes[$maxtf] : $timeframe);
-                $bucketize = true;
-                $multiplier = floor($timeframe / $maxtf);
-            } else {
-                $gettf = $ohlcvTimeframes[$timeframe];
-                $bucketize = false;
-                $multiplier = 1;
-            }
-            $qty = $count * $multiplier;
-            if ($qty > 1000) { $qty = 1000; }
-            $period = ((floor((time() / 60) / $timeframe) * $timeframe) * 60) + ($timeframe * 60);
-            $cacheTime = (count($ohlcvTimeframes) == 0 ? 60 : $period - time());  // Reduce cache time if we are using trade data to generatw OHLCV (no OHLCV support on exchange API)
-            $key = $this->exchange.':ohlcv:'.$symbol.':'.$timeframe.':'.$period.':'.$qty;
-            if ($cacheResult = cache::get($key,$cacheTime)) {
-                $ohlcv = $cacheResult;
-            } else {
-                $ohlcv = $this->normalizer->fetch_ohlcv($symbol,$gettf,$qty);
-                cache::set($key,$ohlcv);
-            }
-            if ($bucketize !== false) {
-                $ohlcv = bucketize($ohlcv, $timeframe);
-            }
-            $ohlcv = array_slice($ohlcv,(0-$count));
-            $result = [
-                'ohlcv'     => $ohlcv,
-                'count'     => count($ohlcv),
-                'symbol'    => $symbol,
-                'timeframe' => $timeframe,
-            ];
-            return $result;
-        }
-
         // Get market data for specific symbol
-        public function market($params) {
+        public function market($params, $cachetime = 5) {
             $symbol = (is_array($params) ? $params['symbol'] : $params);
-            $markets = $this->markets(false,120);
-            foreach($markets as $market) {
-                if ($market->symbol === $symbol) {
-                    if (is_null($market->bid) || is_null($market->ask)){
-                        $ticker = $this->ccxt->fetch_ticker($symbol);
-                        $market->bid = $ticker['bid'];
-                        $market->ask = $ticker['ask'];
+            $key = $this->exchange.':'.$symbol.':markets';
+            if ($cacheResult = cache::get($key,$cachetime)) {
+                return $cacheResult;
+            } else {
+                $markets = $this->markets(false,120);
+                foreach($markets as $market) {
+                    if ($market->symbol === $symbol) {
+                        if (is_null($market->bid) || is_null($market->ask)){
+                            $ticker = $this->ccxt->fetch_ticker($symbol);
+                            $market->bid = $ticker['bid'];
+                            $market->ask = $ticker['ask'];
+                        }
+                        cache::set($key,$market);
+                        return $market;
                     }
-                    return $market;
                 }
+                logger::error('Invalid market symbol');
+                return false;
             }
-            logger::error('Invalid market symbol');
-            return false;
         }
 
         // Get market data for all markets
-        public function markets($tickers = true, $cachetime = 0) {
+        public function markets($tickers = true, $cachetime = 5) {
             $key = $this->exchange.':markets';
             if ($cacheResult = cache::get($key,$cachetime)) {
                 return $cacheResult;
@@ -172,7 +125,7 @@
 
         // Get current positions
         public function positions() {
-            $markets = $this->markets(true,0);
+            $markets = $this->markets(true,5);
             return $this->normalizer->fetch_positions($markets);
         }
 
@@ -286,57 +239,112 @@
             return $usd_free;
         }
 
-        // Perform Trade
-        private function trade($dir, $params) {
-            $symbol = $params['symbol'];
-            $size = $params['size'];
-            $orderSizing = (isset($this->normalizer->orderSizing) ? $this->normalizer->orderSizing : 'quote');
-            if (strtolower(substr($size,-1)) == 'x') {             // Position size given in x
-                $size = $this->total_balance_usd() * str_replace('x','',strtolower($size));
-            }
-            if (strtolower(substr($size,-1)) == '%') {             // Position size given in %
-                $size = $this->total_balance_usd() * (str_replace('%','',strtolower($size) / 100));
-            }
-            $usdSize = $size;
+        // Get current position size in number of contracts (as opposed to USD)
+        private function positionSize($symbol) {
+            $position = $this->position(['symbol' => $symbol, 'suppress' => true]);
             $market = $this->market(['symbol' => $symbol]);
-            $price = $dir == 'buy' ? $market->ask : $market->bid;
-            $contract_size = (($orderSizing == 'quote') ? round($size / $market->contract_size,0) : ($size / $price));
-            $price = isset($params['price']) ? $params['price'] : null;
-            $type = is_null($price) ? 'market' : 'limit';
+            if (is_object($position)) {           // If already in a position
+                $quoteSize = round($position->size_quote / $market->contract_size,0);
+                $baseSize = $position->size_base;
+                return (strtolower($this->normalizer->orderSizing) == 'quote' ? $quoteSize : $baseSize);
+            }
+            return 0;
+        }
+
+        // Get current position direction (long or short)
+        private function positionDirection($symbol) {
             $position = $this->position(['symbol' => $symbol, 'suppress' => true]);
             if (is_object($position)) {           // If already in a position
-                // Flip position if required
-                if ((($dir == 'buy') && ($position->direction == 'short')) || (($dir == 'sell') && ($position->direction == 'long'))) {         
-                    $contract_size += ($orderSizing == 'quote' ? round($position->size_quote / $market->contract_size,0) : $position->size_base);
-
-                }
-                // Extend position if required
-                if ((($dir == 'buy') && ($position->direction == 'long')) || (($dir == 'sell') && ($position->direction == 'short'))) {  
-                    if ($contract_size >= ($orderSizing == 'quote' ? round($position->size_quote / $market->contract_size,0) : $position->size_base)) {
-                        $contract_size -= ($orderSizing == 'quote' ? round($position->size_quote / $market->contract_size,0) : $position->size_base);
-                    } else {
-                        logger::error('Already '.($dir == 'buy'? 'long' : 'short').' more contracts than requested');
-                        $contract_size = 0;
-                    }
-                }
-            }
-            if ($contract_size > 0) {
-                $balance = $this->total_balance_usd();
-                $comment = isset($params['comment']) ? $params['comment'] : 'None';
-                logger::info('TRADE:'.($dir == 'buy' ? 'LONG ' : 'SHORT').' | Symbol: '.$symbol.' | Direction: '.$dir.' | Type: '.$type.' | Size: '.($contract_size * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
-                return $this->ccxt->create_order($symbol, $type, $dir, abs($contract_size), $price);
+                return $position->direction;
             }
             return false;
         }
 
-        // Long Trade
-        public function long($params) {
-            return $this->trade('buy', $params);
+        // Convert USD value to number of contracts, depending of if exchange uses base or quote price and what the acual contract size is per contract
+        private function convertSize($usdSize, $params) {
+            $symbol = $params['symbol'];
+            $market = $this->market(['symbol' => $symbol]);
+            $contractSize = $market->contract_size;                                                      // Exchange contract size in USD
+            $price = isset($params['price']) ? $params['price'] : (($market->bid + $market->ask) / 2);   // Use price if given, else justuse a rough market estimate
+            if ($this->normalizer->orderSizing == 'quote') {                                             // Exchange uses quote price
+                $orderSize = round($usdSize / $contractSize,0);
+            } else {                                                                                     // Exchange uses base price
+                $orderSize = $usdSize / $price;
+            }
+            return $orderSize;
         }
 
-        // Short Trade
+        // Perform Trade
+        private function trade($direction, $params) {
+            $symbol = $params['symbol'];
+            $market = $this->market(['symbol' => $symbol]);
+            $size = $params['size'];
+            $price = isset($params['price']) ? $params['price'] : null;
+            $type = is_null($price) ? 'market' : 'limit';
+            if (strtolower(substr($size,-1)) == 'x') {             // Position size given in x
+                $multiplier = str_replace('x','',strtolower($size));
+                $size = $this->total_balance_usd() * $multiplier;
+            }
+            if (strtolower(substr($size,-1)) == '%') {             // Position size given in %
+                $multiplier = str_replace('%','',strtolower($size)) / 100;
+                $size = $this->total_balance_usd() * $multiplier;
+            }
+            $requestedSize = $this->convertSize($size, $params);
+            $position = $this->position(['symbol' => $symbol, 'suppress' => true]);
+            $positionSize = $this->positionSize($symbol);                                               // Position size in contracts
+            $currentDir = $this->positionDirection($symbol);                                            // Current position direction (long or short)
+            if ($positionSize != 0) {                                                                   // If already in a position
+                if ($direction != $currentDir) {
+                    $requestedSize += $positionSize;                                                    // Flip position if required
+                } 
+                if ($direction == $currentDir) {
+                    if ($requestedSize > $positionSize) {
+                        $requestedSize -= $positionSize;                                                // Extend position if required
+                    } else {      
+                        $requestedSize = 0;
+                        logger::warning('Already '.$direction.' more contracts than requested');        // Prevent PineScript from making you poor
+                    }
+                }
+            }
+            if ($requestedSize > 0) {
+                $balance = $this->total_balance_usd();
+                $comment = isset($params['comment']) ? $params['comment'] : 'None';
+                logger::info('TRADE:'.strtoupper($direction).' | Symbol: '.$symbol.' | Type: '.$type.' | Size: '.($requestedSize * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
+                return $this->ccxt->create_order($symbol, $type, ($direction == "long" ? "buy" : "sell"), abs($requestedSize), $price);
+            }
+            return false;
+        }
+
+        // Long Trade (Limit or Market, depending on if you supply the price parameter)
+        public function long($params) {
+            return $this->trade('long', $params);
+        }
+
+        // Short Trade (Limit or Market, depending on if you supply the price parameter)
         public function short($params) {
-            return $this->trade('sell', $params);
+            return $this->trade('short', $params);
+        }
+
+        // Stop Loss Orders 
+        // Limit or Market, depending on if you supply the 'price' parameter or not
+        // Buy or Sell is automatically determined by comparing the 'trigger' price and current market price. This is a required parameter.
+        public function stoploss($params) {
+            $symbol = $params['symbol'];
+            $trigger = $params['trigger'];
+            $market = $this->market(['symbol' => $symbol]);
+            $size = isset($params['size']) ? $params['size'] : $this->positionSize($symbol);    // Use current position size is no size is provided
+            $price = isset($params['price']) ? $params['price'] : null;
+            $type = is_null($price) ? 'market' : 'limit';
+            $reduce = isset($params['reduce']) ? $params['reduce'] : false;
+            $direction = ($trigger > $market->ask) ? 'buy' : ($trigger < $market->bid ? 'sell' : null);
+            if (is_null($direction)) {                                                          // Trigger price in the middle of the spread, so can't determine direction
+                logger::error('Could not determine direction of stop loss order because the trigger price is inside the spread. Adjust the trigger price and try again.');
+            }
+            if ($size > 0) {
+                return $this->normalizer->create_stoploss($market->id, $direction, $size, $trigger, $price, $reduce);
+            } else {
+                logger::error("Could not automatically determine the size of the stop loss order (perhaps you don't currently have any open positions). Please try again and provide the 'size' parameter.");
+            }
         }
 
         // Close Position
@@ -361,6 +369,59 @@
             } else {
                 logger::error("You do not currently have a position on ".$symbol);
             }
+        }
+
+        // Get OHLCV data
+        public function ohlcv($params) {
+            $symbol = $params['symbol'];
+            $timeframe = timeframeToMinutes(isset($params['timeframe']) ? $params['timeframe'] : '1h');
+            $cacheTime = $timeframe / 2;
+            $count = isset($params['count']) ? $params['count'] : 100;
+            $ohlcvTimeframes = [];
+            $tfs = $this->normalizer->fetch_timeframes();
+            foreach ($tfs as $tfkey => $tf) {
+                $tfmin = timeframeToMinutes($tf);
+                if (!is_null($tfmin)) {
+                    $ohlcvTimeframes[timeframeToMinutes($tf)] = $tfkey;
+                }
+            }
+            if (!array_key_exists($timeframe, $ohlcvTimeframes)) {
+                $maxtf = 1;
+                foreach (array_keys($ohlcvTimeframes) as $tf) {
+                    if (($tf < $timeframe) && ($tf > $maxtf) && ($timeframe % $tf == 0)) {
+                        $maxtf = $tf;
+                    }
+                }
+                $gettf = (isset($ohlcvTimeframes[$maxtf]) ? $ohlcvTimeframes[$maxtf] : $timeframe);
+                $bucketize = true;
+                $multiplier = floor($timeframe / $maxtf);
+            } else {
+                $gettf = $ohlcvTimeframes[$timeframe];
+                $bucketize = false;
+                $multiplier = 1;
+            }
+            $qty = $count * $multiplier;
+            if ($qty > 1000) { $qty = 1000; }
+            $period = ((floor((time() / 60) / $timeframe) * $timeframe) * 60) + ($timeframe * 60);
+            $cacheTime = (count($ohlcvTimeframes) == 0 ? 60 : $period - time());  // Reduce cache time if we are using trade data to generatw OHLCV (no OHLCV support on exchange API)
+            $key = $this->exchange.':ohlcv:'.$symbol.':'.$timeframe.':'.$period.':'.$qty;
+            if ($cacheResult = cache::get($key,$cacheTime)) {
+                $ohlcv = $cacheResult;
+            } else {
+                $ohlcv = $this->normalizer->fetch_ohlcv($symbol,$gettf,$qty);
+                cache::set($key,$ohlcv);
+            }
+            if ($bucketize !== false) {
+                $ohlcv = bucketize($ohlcv, $timeframe);
+            }
+            $ohlcv = array_slice($ohlcv,(0-$count));
+            $result = [
+                'ohlcv'     => $ohlcv,
+                'count'     => count($ohlcv),
+                'symbol'    => $symbol,
+                'timeframe' => $timeframe,
+            ];
+            return $result;
         }
 
         // Settings Getter (did not use __get because I want more control over what can be get)

@@ -200,8 +200,8 @@
                 'type'      =>  'command',
                 'params'    =>  [
                     'accounts'  =>  [
-                        'ftx',
-                        'deribit',
+                        //'ftx',
+                        //'deribit',
                         'bitmex',
                     ],
                     'command'   =>  '<account>:long size=1x symbol=ETHUSD',
@@ -217,8 +217,8 @@
                 'type'      =>  'command',
                 'params'    =>  [
                     'accounts'  =>  [
-                        'ftx',
-                        'deribit',
+                        //'ftx',
+                        //'deribit',
                         'bitmex',
                     ],
                     'command'   =>  '<account>:close size=50% symbol=ETHUSD',
@@ -234,8 +234,8 @@
                 'type'      =>  'command',
                 'params'    =>  [
                     'accounts'  =>  [
-                        'ftx',
-                        'deribit',
+                        //'ftx',
+                        //'deribit',
                         'bitmex',
                     ],
                     'command'   =>  '<account>:short size=10 symbol=ETHUSD',
@@ -251,8 +251,8 @@
                 'type'      =>  'command',
                 'params'    =>  [
                     'accounts'  =>  [
-                        'ftx',
-                        'deribit',
+                        //'ftx',
+                        //'deribit',
                         'bitmex',
                     ],
                     'command'   =>  '<account>:close size=50% symbol=ETHUSD',
@@ -268,8 +268,8 @@
                 'type'      =>  'command',
                 'params'    =>  [
                     'accounts'  =>  [
-                        'ftx',
-                        'deribit',
+                        //'ftx',
+                        //'deribit',
                         'bitmex',
                     ],
                     'command'   =>  '<account>:close symbol=ETHUSD',
@@ -290,7 +290,7 @@
         // Unit test function
 
         public static function runTests($params) {
-            flushCache(0, $permanent=false);
+            cache::flush(0, $permanent=false);
             $results = [];
             $group = $params['group'];
             if ($group == 'all') {

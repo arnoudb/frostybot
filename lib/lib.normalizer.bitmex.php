@@ -136,6 +136,25 @@
             return $result;
         }
 
+        // Create a stop loss order
+        public function create_stoploss($symbol, $direction, $size, $trigger, $price = null, $reduce = true) {
+            $params = [
+                'symbol' => $symbol,
+                'side' => ucfirst($direction),
+                'orderQty' => $size,
+                'ordType' => 'Stop',
+                'stopPx' => $trigger,
+                'price' => $price,
+                'execInst' => ($reduce == true ? 'ReduceOnly' : 'Close'),
+            ];
+            if (is_null($price)) {
+                return $this->ccxt->private_post_order($params);
+            } else {
+                $params['ordType'] = 'StopLimit';
+                return $this->ccxt->private_post_order($params);
+            }
+        }
+
         // Get list of orders from exchange
         public function fetch_orders($markets) {
             $orders = $this->ccxt->private_get_order();
