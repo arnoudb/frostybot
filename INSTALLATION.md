@@ -148,117 +148,62 @@ If you would prefer not to use git, you can also manually download and unzip the
 
  * What this response tells us is that the bot is responding as expected over http. At this point in time you can install an SSL certificate or configure a custom domain for your bot if you like. The actual procedures for doing this are not in this guide, but there are plenty tutorials available on the internet [like this one](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04) to help you complete these tasks.
  
- * Next, you need to configure your exchange API keys on FrostyBot. Edit the bot configuration file using the following command (replace /var/www/html with your web root directory if it is different):
- 
-       sudo nano /var/www/html/frostybot/cfg/cfg.config.php
+ * Add your Exchange API account information to the bot configuration using the **config** command as follows:
+
+       ./frostybot config stub=deribitdemo exchange=deribit apiKey="<your api key>" secret="<your api sectret>" description="Deribit Test Account" testnet=true
+
+  The **stub** parameter can be anything you like, as long as it's alphanumeric with no spaces. You will use the **stub** when sending commands to the bot, so make it something short and simple. I've just called it "deribitdemo", but if you wanted to use 2 accounts on deribit, you could call the one stub "deribitmain" and the other one "deribittest" for example, it's entirely up to you.
+  
+  The **exchange** parameter can be ftx, bitmex or deribit, depending on which exchange you use. The **apiKey** and **secret** are self explanatory, simply add your own api key and secret there (Important: notice the uppercase K in apiKey, it's important to keep it like that). The **description** field can be anything you like, but if you use spaces remember to enclose it in "quotes". Lastly, the **testnet** parameter just lets the bot know which network to connect to. If you want to test it out for a bit, create an api key on the testnet and try it out. The testnet parameter only works for Deribit and Bitmex, because FTX does not have a testnet.
+  
+  Lastly, if you are using the FTX exchange, and you are using a subaccount, please also add **subaccount**="\<sub account name\>". This is required by the FTX API, and it will not work until you add it to the config, but only if you're using subaccounts.
+  
+* You can list your current config by using the following command:
+
+       ./frostybot config
        
- * Once the editor is open, scroll down until you find the accounts section and modify it with your API keys as necessary. Here is a sample with all three supported exchanges configured with both mainnet and testnet configs (the apiKeys and secrets are for illustration purposes only, please replace them with your own). You do not need to configure all of these accounts, only the accounts you need. You can also add more accounts or remove accounts from the array as required, as long as they have unique stubs. Keep an eye on the PHP syntax so you don't break anything. Once you have configured your accounts press CTRL X and then Y to save the file and exit the editor:
- 
-```php
-    // Account settings
-    const accounts = [                      
-        'ftxmain' =>  [                                 // This is the account stub, which is used in <stub>:<command>, for example ftxmain:POSITIONS. NOTE: If you are using a subaccount on FTX, see the ftxsub config below instead.
-            'description'   => 'FTX Main Account',      // This is a general description of the account, for your own information
-            'exchange'      => 'ftx',                   // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your actual FTX sub account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your actual FTX sub account API secret (if you want to use it)
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC-PERP',             // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC-PERP',             // Map BTCUSD to BTC-PERP on the exchange
-                'ETHUSD'    =>  'ETH-PERP',             // Map ETHUSD to ETH-PERP on the exchange
-            ],
-        ],
-        'ftxsub' =>  [                                  // This is the account stub, which is used in <stub>:<command>, for example ftxsub:POSITIONS
-            'description'   => 'FTX Sub Account',       // This is a general description of the account, for your own information
-            'exchange'      => 'ftx',                   // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your actual FTX sub account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your actual FTX sub account API secret (if you want to use it)
-                'headers'   => [
-                    'FTX-SUBACCOUNT' => 'MySubAccount'  // Update this with the name of your sub account (if using a sub account). This is REQUIRED if using a sub account on FTX.
-                ]
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC-PERP',             // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC-PERP',             // Map BTCUSD to BTC-PERP on the exchange
-                'ETHUSD'    =>  'ETH-PERP',             // Map ETHUSD to ETH-PERP on the exchange
-            ],
-        ],
-        'deribitmain' =>  [                             // This is the account stub, which is used in <stub>:<command>, for example deribitmain:POSITIONS
-            'description'   => 'Deribit Main Account',  // This is a general description of the account, for your own information
-            'exchange'      => 'deribit',               // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your Deribit testnet account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your Deribit testnet account API secret (if you want to use it)
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC-PERPETUAL',        // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC-PERPETUAL',        // Map BTCUSD to BTC-PERPETUAL on the exchange
-                'ETHUSD'    =>  'ETH-PERPETUAL',        // Map ETHUSD to ETH-PERPETUAL on the exchange
-            ],
-        ],
-        'deribittest' =>  [                             // This is the account stub, which is used in <stub>:<command>, for example deribittest:POSITIONS
-            'description'   => 'Deribit Test Account',  // This is a general description of the account, for your own information
-            'exchange'      => 'deribit',               // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your Deribit testnet account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your Deribit testnet account API secret (if you want to use it)
-                'urls'      =>  [
-                    'api'   =>  'https://test.deribit.com'   // Override the URL to use the testnet like this
-                ]
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC-PERPETUAL',        // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC-PERPETUAL',        // Map BTCUSD to BTC-PERPETUAL on the exchange
-                'ETHUSD'    =>  'ETH-PERPETUAL',        // Map ETHUSD to ETH-PERPETUAL on the exchange
-            ],
-        ],
-        'bitmexmain' =>  [                              // This is the account stub, which is used in <stub>:<command>, for example bitmexmain:POSITIONS
-            'description'   => 'Bitmex Main Account',   // This is a general description of the account, for your own information
-            'exchange'      => 'bitmex',                // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your Bitmex testnet account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your Bitmex testnet account API secret (if you want to use it)
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC/USD',              // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC/USD',              // Map BTCUSD to BTC/USD on the exchange
-                'ETHUSD'    =>  'ETH/USD',              // Map ETHUSD to ETH/USD on the exchange
-            ],            
-        ],
-        'bitmextest' =>  [                              // This is the account stub, which is used in <stub>:<command>, for example bitmextest:POSITIONS
-            'description'   => 'Bitmex Test Account',   // This is a general description of the account, for your own information
-            'exchange'      => 'bitmex',                // The exchange that this account is on (ftx/deribit/bitmex)
-            'parameters'    =>  [
-                'apiKey'    =>  '123CBA123CBA',         // Replace this with your Bitmex testnet account API key (if you want to use it)
-                'secret'    =>  'ABC123abc123',         // Replace this with your Bitmex testnet account API secret (if you want to use it)
-                'urls'      =>  [
-                    'api'   =>  'https://testnet.bitmex.com'    // Override the URL to use the testnet like this
-                ]
-            ],
-            'symbolmap'     =>  [                       // Symbol mappings to make commands consistent across all Exchanges
-                'default'   =>  'BTC/USD',              // This symbol is used when you don't include the "symbol=" parameter in your command
-                'BTCUSD'    =>  'BTC/USD',              // Map BTCUSD to BTC/USD on the exchange
-                'ETHUSD'    =>  'ETH/USD',              // Map ETHUSD to ETH/USD on the exchange
-            ],            
-        ],
-    ];
-```
-
-* Take note of your configured stubs (the shorthand key for each exchange, such as bitmexmain or deribittest) in your config file, as you will need to use these when sending orders to FrostyBot.
-
-* Now, using the CLI, test if you can list the available markets on your exchange
-
-      cd /var/www/html/frostybot
-      ./frostybot deribitmain:markets
-      
-  If you have configured FrostyBot correctly, you should receive a list of all the available instruments that you can trade on the exchange, such as the example below:
+  If you would like to remove a config, use the command like this:
   
-  ![screenshot3](https://i.imgur.com/tdk6kaL.png "Screenshot")
+       ./frostybot config stub=deribitdemo delete=true
   
-  *Note:* All output from FrostyBot is in JSON format. This allows for easier integration and scripting, should you which to use FrostyBot in order ways.
+  If you just want to update an existing config, just rerun the config command with the same stub name and the other values will be updated.
+
+* Using the deribitdemo config I made above, some example command syntax would be as follows: 
+    
+      deribitdemo:long size=5000 price=8000 symbol=BTC-PERPETUAL  (This example provides the symbol on the commandline)
+      deribitdemo:short size=5000 price=8000 symbol=BTCUSD        (This example uses a symbol mapping in the config o convert BTCUSD to BTC-PERPETUAL)
+      deiribitdemo:short size=5000 price=8000                      (This example uses the "default" symbol mapping in the config which is mapped to BTC-PERPETUAL)    
+    
+*Note:* The order size is always in USD, and the symbol is required for most exchange-specific commands (unless a default symbol mapping has been provided in the config file, in which case that default symbol will be used if no symbol is provided in the command).
+
+To get a list of supported symbols for an exchange, use the following command:
+
+    ./frostybot deribitdemo:markets
+
+* Once all your accounts are configured, ensure that the db/, and log/ directories are writable by the account that you use you run your web server (for example, www-data on Ubuntu). If for some reason you cannot make those directories writable, you can change the location of the directories in the cfg/cfg.config.php file. If you do change those settings, remember to relocate the directories to the new location. 
+* Run some FrostyBot CLI commands to check if you have done the configuration correctly and to ensure that you are able to reach the exchange (Some CLI commands examples are listed further below).
+* Check that your bot is accessible over the public internet by browsing to it's address. You should see a message similar to the following:
+
+    {
+        "results": {
+            "code": 900,
+            "message": "Request received from invalid address: 123.69.123.69",
+            "type": "ERROR"
+        },
+        "messages": []
+    }
+
+*Note:* This error is expected, but its a good way to check if your bot is responding over http/https. You will receive this specific error because the bot has built-in security that will only accept http/https requests from Tradingview's servers. You can still communicate directly with Frostybot using CLI commands. If you need to communicate to the bot over http, you will need to add your IP address into the "whitelist" by using the following command:
+
+        ./frostybot whitelist add="<ip address>" description="An optional description for your own info"
+       
+By default, only Tradingview's servers have access over http/https. Any other machines that you want to allow to access the bot will need to be added to the whitelist. If you want to remove an IP address from the whitelist, use this command:
+
+        ./frostybot whitelist delete="<ip address>"
+
+Note that you cannot delete the default Tradingview addresses in the whitelist, as they are protected against deletion. 
+
+Once you've confirmed that Frostybot is responding over the internet, you can start creating Tradingview alerts:
 
 ### Tradingview Alerts and Webhook Configuration
 
@@ -308,7 +253,8 @@ Other than Tradingview firing off webhooks, you can also communicate manually wi
     ./frostybot deribit:position symbol=BTC-PERPETUAL           (Show current BTC-PERPETUAL position on Deribit)
     ./frostybot ftx:ohlcv symbol=BTC-PERP timeframe=1h          (Show current hourly OHLCV data for FTX BTC-PERP)
     ./frostybot ftx:ohlcv symbol=BTC/USD timeframe=720          (Show current 12hr OHLCV data for Bitmex BTC/USD)
-    ./frostybot config                                          (Show your current configuration)
+    ./frostybot config                                          (Show/modify your current configuration)
+    ./frostybot whitelist add="45.32.65.2"                      (Add an IP address to the whitelist)
     ./frostybot log                                             (Show log file for bot, last 20 lines by default)
     ./frostybot log lines=50                                    (Show the last 50 log file lines)
     ./frostybot log filter=error                                (Show all lines containing errors)
