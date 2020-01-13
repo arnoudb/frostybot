@@ -21,7 +21,7 @@
                 logger::info('Initializing database: '.$sqlFile);
                 $this->exec($sql);
             }     
-            config::import(accounts);
+            //config::import(accounts);
             return true;   
         }
 
