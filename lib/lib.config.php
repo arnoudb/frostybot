@@ -8,6 +8,7 @@
         public static function get($accountStub = null) {
             $db = new db();
             $result = $db->select('accounts');
+            $accounts = [];
             foreach($result as $row) {
                 $stub = strtolower($row->stub);
                 $symbolmaps = $db->select('symbolmap',['exchange'=>$row->exchange]);
