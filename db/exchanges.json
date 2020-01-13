@@ -1,0 +1,29 @@
+[
+    {
+        "description": "FTX",
+        "exchange": "ftx",
+        "parameters": [
+            "apiKey",
+            "secret"
+        ],
+        "headers": [
+            "FTX-SUBACCOUNT"
+        ]
+    },
+    {
+        "description": "Deribit",
+        "exchange": "deribit",
+        "parameters": [
+            "apiKey",
+            "secret"
+        ]
+    },
+    {
+        "description": "Bitmex",
+        "exchange": "bitmex",
+        "parameters": [
+            "apiKey",
+            "secret"
+        ]
+    }
+]
