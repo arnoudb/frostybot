@@ -133,6 +133,19 @@
             return $this->ccxt->private_post_conditional_orders($params);
         }
 
+        // Create a take profit order
+        public function create_takeprofit($symbol, $direction, $size, $trigger, $reduce = true) {
+            $params = [
+                'market' => $symbol,
+                'side' => $direction,
+                'size' => $size,
+                'type' => 'takeProfit',
+                'triggerPrice' => $trigger,
+                'reduceOnly' =>  $reduce,
+            ];
+            return $this->ccxt->private_post_conditional_orders($params);
+        }
+
         // Parse order result
         public function parse_order($market, $order) {
             if (isset($order['result'])) {

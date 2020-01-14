@@ -155,6 +155,19 @@
             }
         }
 
+        // Create a take profit order (Bitmex take profit orders work more like stop orders, so if order to keep things consistent, I've chosen to just use limit orders)
+        public function create_takeprofit($symbol, $direction, $size, $trigger, $reduce = true) {
+            $params = [
+                'symbol' => $symbol,
+                'side' => ucfirst($direction),
+                'orderQty' => $size,
+                'ordType' => 'Limit',
+                'price' => $trigger,
+                //'execInst' => ($reduce == true ? 'ReduceOnly' : 'Close'),  // This breaks if you don't already have an open position
+            ];
+            return $this->ccxt->private_post_order($params);
+        }
+
         // Parse order result
         public function parse_order($market, $order) {
             $id = $order['orderID'];

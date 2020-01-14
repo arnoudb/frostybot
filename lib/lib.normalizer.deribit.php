@@ -183,12 +183,28 @@
                 'amount' => $size * 10,
                 'type' => (is_null($price) ? 'stop_market' : 'stop_limit'),
                 'stopPx' => $trigger,
-                'reduce_only' =>  $reduce,
+                'reduceOnly' =>  $reduce,
                 'execInst' => 'index_price'
             ];
             if (!is_null($price)) {
                 $params['price'] = $price;
             }
+            if ($direction == "sell") {
+                return $this->ccxt->private_post_sell($params);
+            } else {
+                return $this->ccxt->private_post_buy($params);
+            }
+        }
+
+        // Create a take profit order (on Deribit there is no specific take profit order type, so a standard limit order is used)
+        public function create_takeprofit($symbol, $direction, $size, $trigger, $reduce = true) {
+            $params = [
+                'instrument' => $symbol,
+                'amount' => $size * 10,
+                'price' => $trigger,
+                'type' => 'limit',
+                'reduce_only' =>  $reduce
+            ];
             if ($direction == "sell") {
                 return $this->ccxt->private_post_sell($params);
             } else {

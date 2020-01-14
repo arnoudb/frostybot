@@ -231,6 +231,8 @@
                                                 break;
                         case 'STOPLOSS'     :   $result = $this->exchange->stoploss(requiredParams($this->params,['symbol','stoptrigger']));
                                                 break;
+                        case 'TAKEPROFIT'   :   $result = $this->exchange->takeprofit(requiredParams($this->params,['symbol','profittrigger']));
+                                                break;
                         default             :   logger::error('Unknown command: '.$command);
                                                 $result = false;
                                                 break;

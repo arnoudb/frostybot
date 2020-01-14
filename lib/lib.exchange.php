@@ -313,18 +313,32 @@
                 logger::info('TRADE:'.strtoupper($direction).' | Symbol: '.$symbol.' | Type: '.$type.' | Size: '.($requestedSize * $market->contract_size).' | Price: '.($price == "" ? 'Market' : $price).' | Balance: '.$balance.' | Comment: '.$comment);
                 $rawResult = $this->ccxt->create_order($symbol, $type, ($direction == "long" ? "buy" : "sell"), abs($requestedSize), $price);
                 $orderresult = $this->normalizer->parse_order($market, $rawResult['info']);
-                if (isset($params['stoptrigger'])) {
-                    $slparams = [
-                        'symbol' => $symbol,
-                        'stoptrigger' => $params['stoptrigger'],
-                        'size' => (isset($params['stopsize']) ? $params['stopsize'] : $requestedSize),
-                        'stopprice' => (isset($params['stopprice']) ? $params['stopprice'] : null),
-                        'reduce' => (isset($params['reduce']) ? $params['reduce'] : false)
-                    ];
-                    $slresult = $this->stoploss($slparams);
+                if ((isset($params['stoptrigger'])) || (isset($params['profittrigger']))) {
                     $linkedOrder = new linkedOrderObject($stub, $symbol);
                     $linkedOrder->add($orderresult);
-                    $linkedOrder->add($slresult);
+                    // Stop loss orders
+                    if (isset($params['stoptrigger'])) {
+                        $slparams = [
+                            'symbol' => $symbol,
+                            'stoptrigger' => $params['stoptrigger'],
+                            'size' => (isset($params['stopsize']) ? $params['stopsize'] : $requestedSize),
+                            'stopprice' => (isset($params['stopprice']) ? $params['stopprice'] : null),
+                            'reduce' => (isset($params['reduce']) ? $params['reduce'] : false)
+                        ];
+                        $slresult = $this->stoploss($slparams);
+                        $linkedOrder->add($slresult);
+                    }
+                    // Take profit orders
+                    if (isset($params['profittrigger'])) {
+                        $slparams = [
+                            'symbol' => $symbol,
+                            'profittrigger' => $params['profittrigger'],
+                            'size' => (isset($params['stopsize']) ? $params['stopsize'] : $requestedSize),
+                            'reduce' => (isset($params['reduce']) ? $params['reduce'] : false)
+                        ];
+                        $tpresult = $this->takeprofit($slparams);
+                        $linkedOrder->add($tpresult);
+                    }
                     return $linkedOrder;
                 } else {
                     return $orderresult;
@@ -345,7 +359,7 @@
 
         // Stop Loss Orders 
         // Limit or Market, depending on if you supply the 'price' parameter or not
-        // Buy or Sell is automatically determined by comparing the 'trigger' price and current market price. This is a required parameter.
+        // Buy or Sell is automatically determined by comparing the 'stoptrigger' price and current market price. This is a required parameter.
         public function stoploss($params) {
             $symbol = $params['symbol'];
             $trigger = $params['stoptrigger'];
@@ -363,6 +377,28 @@
                 return $this->normalizer->parse_order($market, $result);
             } else {
                 logger::error("Could not automatically determine the size of the stop loss order (perhaps you don't currently have any open positions). Please try again and provide the 'size' parameter.");
+            }
+        }
+
+        // Take Profit Orders 
+        // Buy or Sell is automatically determined by comparing the 'profittrigger' price and current market price. This is a required parameter.
+        // Take profit orders are always limit orders by design
+        public function takeprofit($params) {
+            $symbol = $params['symbol'];
+            $trigger = $params['profittrigger'];
+            $market = $this->market(['symbol' => $symbol]);
+            $size = isset($params['size']) ? $params['size'] : $this->positionSize($symbol);    // Use current position size is no size is provided
+            $type = 'limit';
+            $reduce = isset($params['reduce']) ? $params['reduce'] : false;
+            $direction = ($trigger > $market->ask) ? 'sell' : ($trigger < $market->bid ? 'buy' : null);
+            if (is_null($direction)) {                                                          // Trigger price in the middle of the spread, so can't determine direction
+                logger::error('Could not determine direction of take profit order because the trigger price is inside the spread. Adjust the trigger price and try again.');
+            }
+            if ($size > 0) {
+                $result = $this->normalizer->create_takeprofit($market->id, $direction, $size, $trigger, $reduce);
+                return $this->normalizer->parse_order($market, $result);
+            } else {
+                logger::error("Could not automatically determine the size of the take profit order (perhaps you don't currently have any open positions). Please try again and provide the 'size' parameter.");
             }
         }
 
